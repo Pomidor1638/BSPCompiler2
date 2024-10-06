@@ -22,8 +22,10 @@ typedef struct {
 extern int NumWindings;
 
 typedef struct winding_s {
+
 	int numpoints;
 	vec3_t* points;
+
 } winding_t;
 
 extern winding_t* AllocWinding(int num);
@@ -33,7 +35,6 @@ extern winding_t* CopyWinding(winding_t* w);
 extern winding_t* ClipWinding(winding_t* in, plane_t* split, qbool keepon);
 extern void	DivideWinding(winding_t* in, plane_t* split, winding_t** front, winding_t** back);
 
-#define MAX_PLANE_COUNT 65536
 
 extern int numplanes;
 extern plane_t planes[MAX_PLANE_COUNT];
@@ -47,6 +48,7 @@ typedef struct face_s {
 	int	contents[2];	
 
 	winding_t* w;
+
 } face_t;
 
 face_t* AllocFace(int num);
@@ -64,6 +66,8 @@ typedef struct brush_s  {
 	face_t face;
 
 } brush_t;
+
+brushset_t* Brush_LoadEntity(entity_t* ent, int hullnum);
 
 typedef struct {
 	
