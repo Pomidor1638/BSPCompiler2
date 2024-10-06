@@ -38,9 +38,8 @@ extern void	DivideWinding(winding_t* in, plane_t* split, winding_t** front, wind
 extern int numplanes;
 extern plane_t planes[MAX_PLANE_COUNT];
 
-typedef struct visfacet_s
-{
-	struct visfacet_s* next;
+typedef struct face_s {
+	struct face_s* next;
 
 	int	planenum;
 	int	planeside;
@@ -55,7 +54,7 @@ void FreeFace(face_t* f);
 face_t* CopyFace(face_t* f);
 
 
-typedef struct brush_s {
+typedef struct brush_s  {
 	struct brush_s* next;
 	
 	vec3_t mins, maxs;
@@ -67,8 +66,10 @@ typedef struct brush_s {
 } brush_t;
 
 typedef struct {
+	
 	vec3_t mins, maxs;
 	brush_t* brushes;
+
 } brushset_t;
 
 
@@ -82,7 +83,21 @@ typedef struct {
 } model_t;
 
 typedef struct surface_s {
+
 	struct surface_s* next;
 	int planenum;
 	face_t* faceset;
+
 } surface_t;
+
+
+typedef struct node_s {
+
+	vec3_t mins, maxs;
+	int planenum;
+
+	surface_t* face;
+
+	struct node_s* children[2];
+
+} node_t;
