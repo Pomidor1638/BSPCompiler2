@@ -311,6 +311,7 @@ face_t* AllocFace(int num) {
 
 	f = malloc(sizeof(face_t));
 	memset(f, 0, sizeof(face_t));
+	f->planenum = -1;
 
 	f->w = AllocWinding(num);
 	f->w->numpoints = num;

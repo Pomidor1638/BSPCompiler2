@@ -76,6 +76,8 @@ typedef struct {
 
 } brushset_t;
 
+extern	int			numbrushplanes;
+extern	plane_t		planes[MAX_MAP_PLANES];
 
 typedef struct {
 

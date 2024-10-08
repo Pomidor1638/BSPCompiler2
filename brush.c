@@ -49,6 +49,15 @@ void CreateBrushFaces(void) {
 		if (!w)
 			continue;
 
+		f = AllocFace(w->numpoints);
+		for (int i = 0; i < w->numpoints; i++)
+			VectorCopy(w->points[i], f->w->points[i]);
+
+		FreeWinding(w);
+
+		
+
+
 	}
 
 }
