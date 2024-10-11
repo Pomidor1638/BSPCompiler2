@@ -14,7 +14,7 @@ typedef struct {
 #include "map.h"
 
 #define	ON_EPSILON	0.05
-#define	BOGUS_RANGE	18000
+#define	BOGUS_RANGE	36000
 
 #define MAX_WINDINGS_COUNT 128
 #define MAX_POINTS_ON_WINDING 64
@@ -35,9 +35,8 @@ extern winding_t* CopyWinding(winding_t* w);
 extern winding_t* ClipWinding(winding_t* in, plane_t* split, qbool keepon);
 extern void	DivideWinding(winding_t* in, plane_t* split, winding_t** front, winding_t** back);
 
-
-extern int numplanes;
-extern plane_t planes[MAX_PLANE_COUNT];
+extern	int			numbrushplanes;
+extern	plane_t		planes[MAX_MAP_PLANES];
 
 typedef struct face_s {
 	struct face_s* next;
@@ -63,11 +62,11 @@ typedef struct brush_s  {
 	int numfaces;
 	int contents;
 
-	face_t face;
+	face_t* faces;
 
 } brush_t;
 
-brushset_t* Brush_LoadEntity(entity_t* ent, int hullnum);
+brush_t* AllocBrush();
 
 typedef struct {
 	
@@ -76,8 +75,10 @@ typedef struct {
 
 } brushset_t;
 
-extern	int			numbrushplanes;
-extern	plane_t		planes[MAX_MAP_PLANES];
+brush_t* LoadBrush(mbrush_t* mb, int hullnum);
+brushset_t* Brush_LoadEntity(entity_t* ent, int hullnum);
+
+
 
 typedef struct {
 

@@ -19,8 +19,8 @@ winding_t* BaseWindingForPlane(plane_t* p) {
 			max = v;
 		}
 	}
-	/*if (x == -1)
-		Error("BaseWindingForPlane: no axis found");*/
+	if (x == -1)
+		Error("BaseWindingForPlane: no axis found\n");
 
 	VectorCopy(vec3_origin, vup);
 	switch (x) {
@@ -67,10 +67,13 @@ winding_t* BaseWindingForPlane(plane_t* p) {
 winding_t* AllocWinding(int num) {
 	winding_t* w;
 	
-	if (NumWindings >= MAX_WINDINGS_COUNT || num > MAX_POINTS_ON_WINDING)
-		return NULL;
+	//if (NumWindings >= MAX_WINDINGS_COUNT || num > MAX_POINTS_ON_WINDING)
+	//	return NULL;
 
 	NumWindings++;
+
+	if (num >= MAX_POINTS_ON_WINDING)
+		Error("AllocWinding: MAX_POINTS_ON_WINDING\n");
 
 	w = malloc(sizeof(winding_t));
 	w->points = malloc(num * sizeof(vec3_t));
@@ -92,6 +95,8 @@ winding_t* CopyWinding(winding_t* w) {
 	int			size;
 	winding_t* c;
 
+	NumWindings++;
+
 	size = w->numpoints * sizeof(vec3_t);
 
 	c = malloc(sizeof(winding_t));
@@ -100,7 +105,8 @@ winding_t* CopyWinding(winding_t* w) {
 	c->numpoints = w->numpoints;
 
 	memcpy(c->points, w->points, size);
-	
+
+
 	return c;
 }
 
@@ -147,8 +153,8 @@ winding_t* ClipWinding(winding_t* in, plane_t* split, qbool keepon) {
 	if (!counts[1])
 		return in;
 
-	maxpts = in->numpoints + 4;	// can't use counts[0]+2 because
-	// of fp grouping errors
+	maxpts = in->numpoints + 4;	
+
 	neww = AllocWinding(maxpts);
 
 	for (i = 0; i < in->numpoints; i++)
@@ -193,6 +199,7 @@ winding_t* ClipWinding(winding_t* in, plane_t* split, qbool keepon) {
 		//Error("ClipWinding: points exceeded estimate");
 
 	// free the original winding
+
 	FreeWinding(in);
 	in = CopyWinding(neww);
 	FreeWinding(neww);
@@ -211,6 +218,8 @@ void	DivideWinding(winding_t* in, plane_t* split, winding_t** front, winding_t**
 	vec3_t	mid;
 	winding_t* f, *b;
 	int		maxpts;
+	int f_count, b_count;
+
 
 	counts[0] = counts[1] = counts[2] = 0;
 
@@ -249,8 +258,8 @@ void	DivideWinding(winding_t* in, plane_t* split, winding_t** front, winding_t**
 	maxpts = in->numpoints + 4;	// can't use counts[0]+2 because
 	// of fp grouping errors
 
-	*front = f = AllocWinding(maxpts);
-	*back = b = AllocWinding(maxpts);
+	f = AllocWinding(maxpts);
+	b = AllocWinding(maxpts);
 
 	for (i = 0; i < in->numpoints; i++)
 	{
@@ -279,12 +288,11 @@ void	DivideWinding(winding_t* in, plane_t* split, winding_t** front, winding_t**
 		if (sides[i + 1] == SIDE_ON || sides[i + 1] == sides[i])
 			continue;
 
-		// generate a split point
 		p2 = in->points[(i + 1) % in->numpoints];
 
 		dot = dists[i] / (dists[i] - dists[i + 1]);
-		for (j = 0; j < 3; j++)
-		{	// avoid round off error when possible
+
+		for (j = 0; j < 3; j++) {
 			if (split->normal[j] == 1)
 				mid[j] = split->dist;
 			else if (split->normal[j] == -1)
@@ -299,14 +307,20 @@ void	DivideWinding(winding_t* in, plane_t* split, winding_t** front, winding_t**
 		b->numpoints++;
 	}
 
-	/*if (f->numpoints > maxpts || b->numpoints > maxpts)
-		Error("ClipWinding: points exceeded estimate");*/
+	if (f->numpoints > maxpts || b->numpoints > maxpts)
+		Error("ClipWinding: points exceeded estimate\n");
+
+	*front = CopyWinding(f);
+	*back = CopyWinding(b);
+
+	FreeWinding(f);
+	FreeWinding(b);
+
 }
 
-int numplanes;
-plane_t planes[MAX_PLANE_COUNT];
 
 face_t* AllocFace(int num) {
+	
 	face_t* f;
 
 	f = malloc(sizeof(face_t));
@@ -315,23 +329,35 @@ face_t* AllocFace(int num) {
 
 	f->w = AllocWinding(num);
 	f->w->numpoints = num;
+
+	return f;
 }
 
 
 void FreeFace(face_t* f) {
+	facecount--;
 	FreeWinding(f->w);
 	free(f);
 }
 
 face_t* CopyFace(face_t* f) {
 	face_t* c;
+	
+	facecount++;
 
 	c = malloc(sizeof(face_t));
-
 	memcpy(c, f, sizeof(face_t));
 
 	f->w = CopyWinding(f->w);
 }
 
+brush_t* AllocBrush(void) {
+	brush_t* b;
+
+	b = malloc(sizeof(brush_t));
+	memset(b, 0, sizeof(brush_t));
+
+	return b;
+}
 
 

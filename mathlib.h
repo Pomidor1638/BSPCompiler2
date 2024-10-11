@@ -36,7 +36,7 @@ extern vec_t VectorNormalize(vec3_t vector);
 
 #define COMPARE_EPSILON 0.0005
 
-extern qbool VectorCompare(vec3_t v1, vec3_t v2, qbool inv);
+extern qbool VectorCompare(vec3_t v1, vec3_t v2);
 
 
 #define Q_round(a) (floor(a + 0.5))

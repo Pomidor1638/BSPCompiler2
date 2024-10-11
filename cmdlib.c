@@ -1,4 +1,14 @@
 #include "cmdlib.h"
+#include <sys/types.h>
+#include <sys/stat.h>
+
+#ifdef WIN32
+#include <direct.h>
+#endif
+
+#ifdef NeXT
+#include <libc.h>
+#endif
 
 unsigned int facecount, nodecount, brushcount, entitycount;
 unsigned int planecount, leafcount;
@@ -10,4 +20,17 @@ void PrintMemory(void) {
 	printf("Entities: %u\n", entitycount);
 	printf("Nodes: %u\n", nodecount);
 	printf("Leafes: %u\n", leafcount);
+}
+
+void Error(char* error, ...)
+{
+	va_list argptr;
+
+	printf("************ ERROR ************\n");
+
+	va_start(argptr, error);
+	vprintf(error, argptr);
+	va_end(argptr);
+	printf("\n");
+	exit(1);
 }

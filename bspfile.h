@@ -15,10 +15,14 @@ typedef dvec_t dvec3_t[3];
 #define MAX_CLIPNODE_COUNT 65536
 #define MAX_POINTS_ON_FACE 64
 
+#define MAX_POINTS_ON_WINDING 64
+#define MAX_FACES 128
+
+
 typedef enum {
 	CONTENTS_EMPTY = -1,
 	CONTENTS_SOLID = -2,
-	CONTENTS_EMPTY = -3,
+	CONTENTS_WATER = -3,
 };
 
 typedef struct {
