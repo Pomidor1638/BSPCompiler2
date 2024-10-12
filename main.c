@@ -30,13 +30,15 @@ int main() {
 	mb.next = NULL;
 
 	plane_t planes_buf[6] = {
-		{{ 0, 0, 1}, 1},
+		{{ 0, 1, 1}, 1},
 		{{ 0, 1, 0}, 1},
 		{{ 1, 0, 0}, 1},
 		{{ 0, 0,-1}, 1},
 		{{ 0,-1, 0}, 1},
 		{{-1, 0, 0}, 1}
 	};
+
+	VectorNormalize(planes_buf[0].normal);
 
 	mface_t faces[6];
 
@@ -56,8 +58,12 @@ int main() {
 	mb.faces = &faces[0];
 	//mb.faces->next = NULL;
 
-	b = LoadBrush(&mb, 0);
+	
+
+	b = LoadBrush(&mb, 2);
 	ShowBrush(b);
+
+
 
 	return 0;
 }

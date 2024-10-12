@@ -16,9 +16,15 @@ vec_t VectorNormalize(vec3_t vector) {
 }
 
 qbool VectorCompare(vec3_t v1, vec3_t v2) {
-	for (int i = 0; i < 3; i++) 
-		if (fabs(v1[i] - v2[i]) >= COMPARE_EPSILON)
+
+	for (int i = 0; i < 3; i++) {
+		if (fabs(v1[i] - v2[i]) >= COMPARE_EPSILON) {
 			return qfalse;
+		}
+	}
+
+	//if (v1[])
+
 	return qtrue;
 }
 

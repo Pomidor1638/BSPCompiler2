@@ -13,7 +13,7 @@ typedef struct {
 
 #include "map.h"
 
-#define	ON_EPSILON	0.05
+#define	ON_EPSILON	0.01
 #define	BOGUS_RANGE	36000
 
 #define MAX_WINDINGS_COUNT 128

@@ -30,11 +30,11 @@ typedef enum {
 #define CrossProduct(a, b, c) {c[0]=a[1]*b[2]-a[2]*b[1]; c[1]=a[2]*b[0]-a[0]*b[2];c[2]=a[0]*b[1]-a[1]*b[0];}
 
 
-#define LENGTH_EPSILON 0.001
+#define LENGTH_EPSILON 0.0001
 
 extern vec_t VectorNormalize(vec3_t vector);
 
-#define COMPARE_EPSILON 0.0005
+#define COMPARE_EPSILON 0.00005
 
 extern qbool VectorCompare(vec3_t v1, vec3_t v2);
 
