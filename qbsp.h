@@ -77,7 +77,7 @@ typedef struct {
 
 brush_t* LoadBrush(mbrush_t* mb, int hullnum);
 brushset_t* Brush_LoadEntity(entity_t* ent, int hullnum);
-
+int	FindPlane(plane_t* dplane, int* side);
 
 
 typedef struct {

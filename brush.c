@@ -21,19 +21,19 @@ face_t* brush_faces;
 #define	ANGLEEPSILON	0.00001
 
 
-void ClearBounds(void) {
+void ClearBounds(brushset_t* b) {
 	for (int i = 0; i < 3; i++) {
-		brush_maxs[i] = -9999999;
-		brush_mins[i] =  9999999;
+		b->maxs[i] = -9999999;
+		b->mins[i] =  9999999;
 	}
 }
 
-void AddToBounds(vec3_t p) {
+void AddToBounds(brushset_t* b, vec3_t p) {
 	for (int i = 0; i < 3; i++) {
-		if (p[i] < brush_mins[i])
-			brush_mins[i] = p[i];
-		if (p[i] > brush_maxs[i])
-			brush_maxs[i] = p[i];
+		if (p[i] < b->mins[i])
+			b->mins[i] = p[i];
+		if (p[i] > b->maxs[i])
+			b->maxs[i] = p[i];
 	}
 }
 
@@ -91,8 +91,6 @@ void AddBrushPlane(plane_t* plane) {
 			return;
 		}
 	}
-	//printf("1\n");
-;	//printf("Plane Added: %f, %f, %f, %f\n", plane->normal[0], plane->normal[1], plane->normal[2], plane->dist);
 
 	faces[i].plane = *plane;
 	faces[i].texinfo = 0; // faces[0].texinfo;
@@ -178,7 +176,10 @@ void CreateBrushFaces(void) {
 
 	brush_faces = NULL;
 
-	ClearBounds();
+	for (int i = 0; i < 3; i++) {
+		brush_mins[i] =  99999999;
+		brush_maxs[i] = -99999999;
+	}
 
 	for (i = 0; i < numbrushfaces; i++) {
 		mf = &faces[i];
@@ -234,8 +235,10 @@ void CreateBrushFaces(void) {
 brush_t* LoadBrush(mbrush_t* mb, int hullnum) {
 	brush_t* b;
 	mface_t* mf;
-
-	ClearBounds();
+	for (int i = 0; i < 3; i++) {
+		brush_mins[i] =  99999999;
+		brush_maxs[i] = -99999999;
+	}
 
 	numbrushfaces = 0;
 
@@ -269,4 +272,8 @@ brush_t* LoadBrush(mbrush_t* mb, int hullnum) {
 	b->faces = brush_faces;
 	//b->numfaces 
 	return b;
+}
+
+brushset_t* Brush_LoadEntity(entity_t* ent, int hullnum) {
+
 }
