@@ -174,6 +174,14 @@ void CreateBrushFaces(void) {
 	plane_t	   plane;
 	mface_t*      mf;
 
+	if (brush_faces) {
+		face_t* next;
+		for (f = brush_faces; f; f = next) {
+			next = f->next;
+			FreeFace(f);
+		}
+	}
+
 	brush_faces = NULL;
 
 	for (int i = 0; i < 3; i++) {
@@ -235,9 +243,10 @@ void CreateBrushFaces(void) {
 brush_t* LoadBrush(mbrush_t* mb, int hullnum) {
 	brush_t* b;
 	mface_t* mf;
+	
 	for (int i = 0; i < 3; i++) {
-		brush_mins[i] =  99999999;
-		brush_maxs[i] = -99999999;
+		brush_mins[i] =  9999999999;
+		brush_maxs[i] = -9999999999;
 	}
 
 	numbrushfaces = 0;
@@ -271,9 +280,28 @@ brush_t* LoadBrush(mbrush_t* mb, int hullnum) {
 
 	b->faces = brush_faces;
 	//b->numfaces 
+	//planecount = numbrushfaces;
+
 	return b;
 }
 
 brushset_t* Brush_LoadEntity(entity_t* ent, int hullnum) {
+	brushset_t* bs;
+	brush_t* b;
+	mbrush_t* mb;
 
+	bs = AllocBrushset();
+
+	for (mb = ent->brushes; mb; mb = mb->next) {
+		b = LoadBrush(mb, hullnum);
+		b->next = bs->brushes;
+		bs->brushes = b;
+
+		AddToBounds(bs, b->mins);
+		AddToBounds(bs, b->maxs);
+	}
+	
+	planecount = numbrushfaces;
+
+	return bs;
 }

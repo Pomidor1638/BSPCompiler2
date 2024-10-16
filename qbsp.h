@@ -28,17 +28,18 @@ typedef struct winding_s {
 
 } winding_t;
 
-extern winding_t* AllocWinding(int num);
-extern winding_t* BaseWindingForPlane(plane_t* p);
-extern void FreeWinding(winding_t* w);
-extern winding_t* CopyWinding(winding_t* w);
-extern winding_t* ClipWinding(winding_t* in, plane_t* split, qbool keepon);
-extern void	DivideWinding(winding_t* in, plane_t* split, winding_t** front, winding_t** back);
+winding_t* AllocWinding(int num);
+winding_t* BaseWindingForPlane(plane_t* p);
+void FreeWinding(winding_t* w);
+winding_t* CopyWinding(winding_t* w);
+winding_t* ClipWinding(winding_t* in, plane_t* split, qbool keepon);
+void	DivideWinding(winding_t* in, plane_t* split, winding_t** front, winding_t** back);
 
 extern	int			numbrushplanes;
 extern	plane_t		planes[MAX_MAP_PLANES];
 
 typedef struct face_s {
+
 	struct face_s* next;
 
 	int	planenum;
@@ -48,7 +49,10 @@ typedef struct face_s {
 
 	winding_t* w;
 
+	struct face_s* origin;
+
 } face_t;
+
 
 face_t* AllocFace(int num);
 void FreeFace(face_t* f);
@@ -67,6 +71,7 @@ typedef struct brush_s  {
 } brush_t;
 
 brush_t* AllocBrush();
+void FreeBrush(brush_t* b);
 
 typedef struct {
 	
@@ -74,6 +79,9 @@ typedef struct {
 	brush_t* brushes;
 
 } brushset_t;
+
+brushset_t* AllocBrushset();
+void FreeBrushset(brushset_t* bs);
 
 brush_t* LoadBrush(mbrush_t* mb, int hullnum);
 brushset_t* Brush_LoadEntity(entity_t* ent, int hullnum);
@@ -108,3 +116,7 @@ typedef struct node_s {
 	struct node_s* children[2];
 
 } node_t;
+
+extern face_t* validfaces[MAX_PLANE_COUNT];
+
+surface_t* CSGFaces(brushset_t* bs);

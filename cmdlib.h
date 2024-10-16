@@ -11,8 +11,7 @@
 
 typedef unsigned char byte;
 
-extern unsigned int facecount, nodecount, brushcount, entitycount;
-extern unsigned int planecount, leafcount;
+extern unsigned int facecount, nodecount, brushcount, entitycount, leafcount, planecount;
 
 extern void PrintMemory(void);
 extern void Error(char* error, ...);

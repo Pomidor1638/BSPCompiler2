@@ -30,12 +30,12 @@ int main() {
 	mb.next = NULL;
 
 	plane_t planes_buf[6] = {
-		{{ 0, 1, 1}, 1},
-		{{ 0, 1, 0}, 1},
-		{{ 1, 0, 0}, 1},
-		{{ 0, 0,-1}, 1},
-		{{ 0,-1, 0}, 1},
-		{{-1, 0, 0}, 1}
+		{{ 1, 1, 1}, 15},
+		{{ 0, 1, 0}, 10},
+		{{ 1, 0, 0}, 10},
+		{{ 0, 0,-1}, 10},
+		{{ 0,-1, 0}, 10},
+		{{-1, 0, 0}, 10}
 	};
 
 	VectorNormalize(planes_buf[0].normal);
@@ -43,26 +43,24 @@ int main() {
 	mface_t faces[6];
 
 	for (int i = 0; i < 6; i++) {
-		//printf("%i\n", i);
 		faces[i].next = NULL;
 		faces[i].plane = planes_buf[i];
 		faces[i].texinfo = 0;
 	}
 
-	for (int i = 0; i < 5; i++) 
-	{
-		//printf("%p\n", &faces[i + 1]);
+	for (int i = 0; i < 5; i++) {
 		faces[i].next = &faces[i + 1];
 	}
 
 	mb.faces = &faces[0];
-	//mb.faces->next = NULL;
-
 	
 
-	b = LoadBrush(&mb, 2);
+	b = LoadBrush(&mb, 0);
 	ShowBrush(b);
 
+	PrintMemory();
+
+	FreeBrush(b);
 
 
 	return 0;

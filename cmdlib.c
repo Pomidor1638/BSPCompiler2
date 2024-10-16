@@ -10,8 +10,7 @@
 #include <libc.h>
 #endif
 
-unsigned int facecount, nodecount, brushcount, entitycount;
-unsigned int planecount, leafcount;
+unsigned int facecount, nodecount, brushcount, entitycount, leafcount, planecount;
 
 void PrintMemory(void) {
 	printf("Planes: %u\n", planecount);

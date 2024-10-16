@@ -70,10 +70,11 @@ winding_t* AllocWinding(int num) {
 	//if (NumWindings >= MAX_WINDINGS_COUNT || num > MAX_POINTS_ON_WINDING)
 	//	return NULL;
 
-	NumWindings++;
 
 	if (num >= MAX_POINTS_ON_WINDING)
 		Error("AllocWinding: MAX_POINTS_ON_WINDING\n");
+
+	NumWindings++;
 
 	w = malloc(sizeof(winding_t));
 	w->points = malloc(num * sizeof(vec3_t));
@@ -224,8 +225,7 @@ void	DivideWinding(winding_t* in, plane_t* split, winding_t** front, winding_t**
 	counts[0] = counts[1] = counts[2] = 0;
 
 	// determine sides for each point
-	for (i = 0; i < in->numpoints; i++)
-	{
+	for (i = 0; i < in->numpoints; i++) {
 		dot = DotProduct(in->points[i], split->normal);
 		dot -= split->dist;
 		dists[i] = dot;
@@ -233,8 +233,7 @@ void	DivideWinding(winding_t* in, plane_t* split, winding_t** front, winding_t**
 			sides[i] = SIDE_FRONT;
 		else if (dot < -ON_EPSILON)
 			sides[i] = SIDE_BACK;
-		else
-		{
+		else {
 			sides[i] = SIDE_ON;
 		}
 		counts[sides[i]]++;
@@ -244,13 +243,12 @@ void	DivideWinding(winding_t* in, plane_t* split, winding_t** front, winding_t**
 
 	*front = *back = NULL;
 
-	if (!counts[0])
-	{
+	if (!counts[0]) {
 		*back = in;
 		return;
 	}
-	if (!counts[1])
-	{
+
+	if (!counts[1]) {
 		*front = in;
 		return;
 	}
@@ -261,12 +259,10 @@ void	DivideWinding(winding_t* in, plane_t* split, winding_t** front, winding_t**
 	f = AllocWinding(maxpts);
 	b = AllocWinding(maxpts);
 
-	for (i = 0; i < in->numpoints; i++)
-	{
+	for (i = 0; i < in->numpoints; i++) {
 		p1 = in->points[i];
 
-		if (sides[i] == SIDE_ON)
-		{
+		if (sides[i] == SIDE_ON) {
 			VectorCopy(p1, f->points[f->numpoints]);
 			f->numpoints++;
 			VectorCopy(p1, b->points[b->numpoints]);
@@ -274,13 +270,11 @@ void	DivideWinding(winding_t* in, plane_t* split, winding_t** front, winding_t**
 			continue;
 		}
 
-		if (sides[i] == SIDE_FRONT)
-		{
+		if (sides[i] == SIDE_FRONT) {
 			VectorCopy(p1, f->points[f->numpoints]);
 			f->numpoints++;
 		}
-		if (sides[i] == SIDE_BACK)
-		{
+		if (sides[i] == SIDE_BACK) {
 			VectorCopy(p1, b->points[b->numpoints]);
 			b->numpoints++;
 		}
@@ -320,7 +314,9 @@ void	DivideWinding(winding_t* in, plane_t* split, winding_t** front, winding_t**
 
 
 face_t* AllocFace(int num) {
-	
+
+
+
 	face_t* f;
 
 	f = malloc(sizeof(face_t));
@@ -330,14 +326,17 @@ face_t* AllocFace(int num) {
 	f->w = AllocWinding(num);
 	f->w->numpoints = num;
 
+	facecount++;
+
 	return f;
 }
 
 
 void FreeFace(face_t* f) {
-	facecount--;
+
 	FreeWinding(f->w);
 	free(f);
+	facecount--;
 }
 
 face_t* CopyFace(face_t* f) {
@@ -349,6 +348,8 @@ face_t* CopyFace(face_t* f) {
 	memcpy(c, f, sizeof(face_t));
 
 	f->w = CopyWinding(f->w);
+
+	return c;
 }
 
 brush_t* AllocBrush(void) {
@@ -357,7 +358,52 @@ brush_t* AllocBrush(void) {
 	b = malloc(sizeof(brush_t));
 	memset(b, 0, sizeof(brush_t));
 
+	for (int i = 0; i < 3; i++) {
+		b->mins[i] =  9999999999;
+		b->maxs[i] = -9999999999;
+	}
+
+	brushcount++;
+
 	return b;
 }
 
 
+void FreeBrush(brush_t* b) {
+	face_t* f;
+	face_t* next;
+	for (f = b->faces; f; f = next) {
+		next = f->next;
+		FreeFace(f);
+	}
+	free(b);
+	brushcount--;
+}
+
+
+brushset_t* AllocBrushset() {
+	brushset_t* bs;
+	bs = malloc(sizeof(brushset_t));
+	memset(bs, 0, sizeof(brushset_t));
+
+	for (int i = 0; i < 3; i++) {
+		bs->mins[i] =  9999999999;
+		bs->maxs[i] = -9999999999;
+	}
+
+	brushcount++;
+
+	return bs;
+}
+
+void FreeBrushset(brushset_t* bs) {
+	brush_t* b;
+	brush_t* next;
+
+
+	for (b = bs->brushes; b; b = next) {
+		next = b->next;
+		FreeBrush(b);
+	}
+
+}
