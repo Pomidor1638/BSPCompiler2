@@ -13,6 +13,7 @@ void SplitFace(face_t* f, plane_t* split, face_t** front, face_t** back) {
 	winding_t *wf, *wb, *ws;
 
 	*front = *back = NULL;
+
 	ws = CopyWinding(f->w);
 
 	DivideWinding(ws, split, &wf, &wb);
@@ -33,8 +34,7 @@ void SplitFace(face_t* f, plane_t* split, face_t** front, face_t** back) {
 		(*back)->w = wb;
 	}
 
-
-
+	FreeFace(f);
 }
 
 
