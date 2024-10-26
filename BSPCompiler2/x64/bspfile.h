@@ -23,11 +23,14 @@ typedef enum {
 	CONTENTS_EMPTY = -1,
 	CONTENTS_SOLID = -2,
 	CONTENTS_WATER = -3,
-};
+	CONTENTS_SLIME = -4,
+	CONTENTS_LAVA  = -5,
+	CONTENTS_SKY   = -6
+} CONTENTS_CLASS;
 
 typedef struct {
 	dvec3_t normal;
-	dvec_t dist;
+	dvec_t  dist;
 } dplane_t;
 
 typedef struct {

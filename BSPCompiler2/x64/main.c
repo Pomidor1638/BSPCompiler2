@@ -108,7 +108,7 @@ int main() {
 
 	for (s = surf; s; s = next) {
 		next = s->next;
-		FreeSurf(s, qtrue);
+		FreeSurface(s, qtrue);
 	}
 
 	FreeBrushset(bs);

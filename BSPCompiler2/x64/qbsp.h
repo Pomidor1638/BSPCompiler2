@@ -105,7 +105,7 @@ typedef struct {
 
 	brush_t* set;
 
-} entity_t;
+} model_t;
 
 typedef struct surface_s {
 
@@ -120,7 +120,7 @@ typedef struct surface_s {
 } surface_t;
 
 surface_t* AllocSurface(void);
-void FreeSurf(surface_t* surf, qbool freeface);
+void FreeSurface(surface_t* surf, qbool freeface);
 
 // csg.c
 
@@ -163,20 +163,10 @@ surface_t* CSGFaces(brushset_t* bs);
 extern brushset_t* brushset;
 
 // solidbsp.c
-void DivideFacet(face_t* in, plane_t* split, face_t** front, face_t** back);
 void SubdivideFace(face_t* f, face_t** prevptr);
+
 node_t* SolidBSP(surface_t* surfhead, qbool midsplit);
 
 
 
-void qprintf(char* fmt, ...)
-{
-	va_list argptr;
-
-	if (!verbose)
-		return;
-
-	va_start(argptr, fmt);
-	vprintf(fmt, argptr);
-	va_end(argptr);
-}
+void qprintf(char* fmt, ...);

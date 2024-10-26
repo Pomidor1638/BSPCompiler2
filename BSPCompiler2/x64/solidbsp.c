@@ -8,6 +8,11 @@ int		c_solid, c_empty, c_water;
 
 qbool		usemidsplit;
 
+
+void SubdivideFace(face_t* f, face_t** prevptr) {
+
+}
+
 int FaceSide(face_t* in, plane_t* split) {
 	int		frontcount, backcount;
 	vec_t	dot;
@@ -119,11 +124,12 @@ surface_t* SelectPartition(surface_t* surfaces) {
 
 	i = 0;
 	bestsurface = NULL;
-	for (p = surfaces; p; p = p->next)
+	for (p = surfaces; p; p = p->next) {
 		if (!p->onnode) {
 			i++;
 			bestsurface = p;
 		}
+	}
 
 	if (i == 0)
 		return NULL; 
@@ -144,10 +150,127 @@ surface_t* SelectPartition(surface_t* surfaces) {
 				maxs[j] = p->maxs[j];
 		}
 
-	if (usemidsplit) 
-		return ChooseMidPlaneFromList(surfaces, mins, maxs);
+	//if (usemidsplit) 
+	//	return ChooseMidPlaneFromList(surfaces, mins, maxs);
 	
 	return ChoosePlaneFromList(surfaces, mins, maxs, qtrue);
+}
+
+void DividePlane(surface_t* in, plane_t* split, surface_t** front, surface_t** back)
+{
+	face_t* facet, * next;
+	face_t* frontlist, * backlist;
+	face_t* frontfrag, * backfrag;
+	surface_t* news;
+	plane_t* inplane;
+
+	inplane = &planes[in->planenum];
+
+	// parallel case is easy
+	if (VectorCompare(inplane->normal, split->normal))
+	{
+		// check for exactly on node
+		if (inplane->dist == split->dist)
+		{	// divide the facets to the front and back sides
+			news = AllocSurface();
+			*news = *in;
+
+			facet = in->faces;
+			in->faces = NULL;
+			news->faces = NULL;
+			in->onnode = news->onnode = qtrue;
+
+			for (; facet; facet = next)
+			{
+				next = facet->next;
+				if (facet->planeside == 1)
+				{
+					facet->next = news->faces;
+					news->faces = facet;
+				}
+				else
+				{
+					facet->next = in->faces;
+					in->faces = facet;
+				}
+			}
+
+			if (in->faces)
+				*front = in;
+			else
+				*front = NULL;
+			if (news->faces)
+				*back = news;
+			else
+				*back = NULL;
+			return;
+		}
+
+		if (inplane->dist > split->dist)
+		{
+			*front = in;
+			*back = NULL;
+		}
+		else
+		{
+			*front = NULL;
+			*back = in;
+		}
+		return;
+	}
+
+	// do a real split.  may still end up entirely on one side
+	// OPTIMIZE: use bounding box for fast test
+	frontlist = NULL;
+	backlist = NULL;
+
+	for (facet = in->faces; facet; facet = next)
+	{
+		next = facet->next;
+		SplitFace(facet, split, &frontfrag, &backfrag);
+		if (frontfrag)
+		{
+			frontfrag->next = frontlist;
+			frontlist = frontfrag;
+		}
+		if (backfrag)
+		{
+			backfrag->next = backlist;
+			backlist = backfrag;
+		}
+	}
+
+	// if nothing actually got split, just move the in plane
+
+	if (frontlist == NULL)
+	{
+		*front = NULL;
+		*back = in;
+		in->faces = backlist;
+		return;
+	}
+
+	if (backlist == NULL)
+	{
+		*front = in;
+		*back = NULL;
+		in->faces = frontlist;
+		return;
+	}
+
+
+	// stuff got split, so allocate one new plane and reuse in
+	news = AllocSurface();
+	*news = *in;
+	news->faces = backlist;
+	*back = news;
+
+	in->faces = frontlist;
+	*front = in;
+
+	// recalc bboxes and flags
+	CalcSurfaceInfo(news);
+	CalcSurfaceInfo(in);
 }
 
 void LinkConvexFaces(surface_t* planelist, node_t* leafnode) {
@@ -157,7 +280,6 @@ void LinkConvexFaces(surface_t* planelist, node_t* leafnode) {
 	int			i, count;
 	int fsc_surfCount;
 
-	leafnode->faces = NULL;
 	leafnode->contents = 0;
 	leafnode->planenum = -1;
 
@@ -189,9 +311,9 @@ void LinkConvexFaces(surface_t* planelist, node_t* leafnode) {
 		c_solid++;
 		break;
 	case CONTENTS_WATER:
-	//case CONTENTS_SLIME:
-	//case CONTENTS_LAVA:
-	//case CONTENTS_SKY:
+	case CONTENTS_SLIME:
+	case CONTENTS_LAVA:
+	case CONTENTS_SKY:
 		c_water++;
 		break;
 	default:
@@ -213,13 +335,13 @@ void LinkConvexFaces(surface_t* planelist, node_t* leafnode) {
 			i++;
 			FreeFace(f);
 		}
-		FreeSurface(surf);
+		FreeSurface(surf, qfalse);
 	}
 	leafnode->markfaces[i] = NULL;	// sentinal
 }
 
 face_t* LinkNodeFaces(surface_t* surface) {
-	face_t* f, * new, ** prevptr;
+	face_t* f, * new, **prevptr;
 	face_t* list;
 
 	list = NULL;
@@ -259,9 +381,11 @@ void PartitionSurfaces(surface_t* surfaces, node_t* node) {
 	split = SelectPartition(surfaces);
 	if (!split) {
 		node->planenum = PLANENUM_LEAF;
-		LinkConvexFaces(surfaces, node);
 		return;
 	}
+
+
+
 
 }
 

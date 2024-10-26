@@ -1,5 +1,10 @@
 #include "qbsp.h"
 
+
+qbool verbose;
+qbool noclip;
+qbool nodraw;
+
 int NumWindings = 0;
 brushset_t* brushset;
 
@@ -442,7 +447,7 @@ surface_t* AllocSurface() {
 
 }
 
-void FreeSurf(surface_t* surf, qbool freeface) {
+void FreeSurface(surface_t* surf, qbool freeface) {
 	face_t *f, *next;
 
 	if (freeface) {
@@ -489,4 +494,15 @@ void FreeNode(node_t* node, qbool recursive) {
 	}
 
 	free(node);
+}
+
+void qprintf(char* fmt, ...) {
+	va_list argptr;
+
+	if (!verbose)
+		return;
+
+	va_start(argptr, fmt);
+	vprintf(fmt, argptr);
+	va_end(argptr);
 }
