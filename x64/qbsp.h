@@ -25,6 +25,7 @@ extern qbool verbose;
 extern qbool noclip;
 extern qbool nodraw;
 
+void qprintf(char* fmt, ...);
 
 extern int NumWindings;
 
@@ -58,7 +59,7 @@ typedef struct face_s {
 
 	winding_t* w;
 
-	struct face_s* origin;
+	qbool marked;
 
 } face_t;
 
@@ -120,6 +121,7 @@ typedef struct surface_s {
 } surface_t;
 
 surface_t* AllocSurface(void);
+surface_t* CopySurface(surface_t* surface, qbool copyfaces);
 void FreeSurface(surface_t* surf, qbool freeface);
 
 // csg.c
@@ -133,24 +135,22 @@ void CalcSurfaceInfo(surface_t* surf);
 
 typedef struct node_s {
 
-	vec3_t			mins, maxs;		
+	vec3_t			mins, maxs;	
 
-	int				planenum;		
-	int				outputplanenum;	
-
+	int				planenum;	
+	int				outputplanenum;
+	int				firstface;	
+	int				numfaces;	
 	struct node_s* children[2];	
+	
+	face_t* faces;			
 
-	int				contents;		
-
-	// for leafes
-
+	int				contents;	
 	face_t** markfaces;	
 	struct portal_s* portals;
-
-	winding_t*		windings;
-	int				visleafnum;		
-	int				valid;			
-	int				occupied;
+	int				visleafnum;	
+	int				valid;		
+	int				occupied;	
 
 } node_t;
 
@@ -165,8 +165,22 @@ extern brushset_t* brushset;
 // solidbsp.c
 void SubdivideFace(face_t* f, face_t** prevptr);
 
+int calls;
 node_t* SolidBSP(surface_t* surfhead, qbool midsplit);
 
+// portal.c
+typedef struct portal_s
+{
+	int			planenum;
+	node_t* nodes[2];		// [0] = front side of planenum
+	struct portal_s* next[2];
+	winding_t* winding;
+} portal_t;
+
+extern	node_t	outside_node;		// portals outside the world face this
+
+void PortalizeWorld(node_t* headnode);
+void WritePortalfile(node_t* headnode);
+void FreeAllPortals(node_t* node);
 
 
-void qprintf(char* fmt, ...);
