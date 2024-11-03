@@ -1,6 +1,11 @@
 #include "qbsp.h"
 
+qbool verbose = qtrue;
+qbool noclip;
+qbool nodraw;
+
 int NumWindings = 0;
+brushset_t* brushset;
 
 winding_t* BaseWindingForPlane(plane_t* p) {
 	int		i, x;
@@ -74,20 +79,23 @@ winding_t* AllocWinding(int num) {
 	if (num >= MAX_POINTS_ON_WINDING)
 		Error("AllocWinding: MAX_POINTS_ON_WINDING\n");
 
-	NumWindings++;
 
 	w = malloc(sizeof(winding_t));
 	w->points = malloc(num * sizeof(vec3_t));
 
 	w->numpoints = 0;
 
+	windingcount++;
 	return w;
 }
 
 void FreeWinding(winding_t* w) {
 	
-	if (!w) return;
-	NumWindings--;
+
+	if (!w) 
+		return;
+	
+	windingcount--;
 	free(w->points);
 	free(w);
 }
@@ -96,7 +104,7 @@ winding_t* CopyWinding(winding_t* w) {
 	int			size;
 	winding_t* c;
 
-	NumWindings++;
+	windingcount++;
 
 	size = w->numpoints * sizeof(vec3_t);
 
@@ -309,6 +317,7 @@ void	DivideWinding(winding_t* in, plane_t* split, winding_t** front, winding_t**
 
 	FreeWinding(f);
 	FreeWinding(b);
+	FreeWinding(in);
 
 }
 
@@ -347,11 +356,28 @@ face_t* CopyFace(face_t* f) {
 	c = malloc(sizeof(face_t));
 	memcpy(c, f, sizeof(face_t));
 
-	f->w = CopyWinding(f->w);
+	c->w = CopyWinding(f->w);
+
+	c->next = NULL;
 
 	return c;
 }
 
+face_t* ExtendFace(face_t* f) {
+	face_t* c;
+
+	facecount++;
+
+	c = malloc(sizeof(face_t));
+	memcpy(c, f, sizeof(face_t));
+
+	c->w = NULL;
+	c->next = NULL;
+
+	return c;
+}
+
+ 
 brush_t* AllocBrush(void) {
 	brush_t* b;
 
@@ -359,8 +385,8 @@ brush_t* AllocBrush(void) {
 	memset(b, 0, sizeof(brush_t));
 
 	for (int i = 0; i < 3; i++) {
-		b->mins[i] =  9999999999;
-		b->maxs[i] = -9999999999;
+		b->mins[i] =  MAX_RANGE;
+		b->maxs[i] = -MAX_RANGE;
 	}
 
 	brushcount++;
@@ -387,11 +413,10 @@ brushset_t* AllocBrushset() {
 	memset(bs, 0, sizeof(brushset_t));
 
 	for (int i = 0; i < 3; i++) {
-		bs->mins[i] =  9999999999;
-		bs->maxs[i] = -9999999999;
+		bs->mins[i] =  MAX_RANGE;
+		bs->maxs[i] = -MAX_RANGE;
 	}
 
-	brushcount++;
 
 	return bs;
 }
@@ -406,4 +431,120 @@ void FreeBrushset(brushset_t* bs) {
 		FreeBrush(b);
 	}
 
+}
+
+
+surface_t* AllocSurface() {
+
+	surface_t* surf = malloc(sizeof(surface_t));
+	memset(surf, 0, sizeof(surface_t));
+
+	for (int i = 0; i < 3; i++) {
+		surf->mins[i] =  MAX_RANGE;
+		surf->maxs[i] = -MAX_RANGE;
+	}
+
+	surfacecount++;
+
+
+	return surf;
+
+}
+
+surface_t* CopySurface(surface_t* surface, qbool copyfaces) {
+	surface_t* news;
+	face_t* f, *nf, *list;
+
+	news = AllocSurface();
+
+	memcpy(news, surface, sizeof(surface_t));
+
+	news->faces = NULL;
+
+	if (copyfaces) {
+		for (f = surface->faces; f; f = f->next) {			
+
+			nf = CopyFace(f);
+
+			nf->next = news->faces;
+
+			news->faces = nf;
+
+		}
+	}
+
+	return news;
+}
+
+void FreeSurface(surface_t* surf, qbool freeface) {
+	face_t *f, *next;
+
+
+	if (freeface) {
+		for (f = surf->faces; f; f = next) {
+			next = f->next;
+			FreeFace(f);
+		}
+	}
+
+	free(surf);
+	surfacecount--;
+}
+
+node_t* AllocNode() {
+	nodecount++;
+	node_t* node = malloc(sizeof(node_t));
+	memset(node, 0, sizeof(node_t));
+
+	node->planenum = -1;
+
+	for (int i = 0; i < 3; i++) {
+		node->mins[i] =  MAX_RANGE;
+		node->maxs[i] = -MAX_RANGE;
+	}
+
+	return node;
+
+}
+
+void FreeNode_r(node_t* node) {
+
+	face_t *f, *next;
+	node_t* children[2];
+
+	if (!node)
+		return;
+
+	children[0] = node->children[0];
+	children[1] = node->children[1];
+
+
+	if (node->planenum != PLANENUM_LEAF) {
+		for (f = node->faces; f; f = next) {
+			next = f->next;
+			FreeFace(f);
+		}
+		FreeNode_r(children[0]);
+		FreeNode_r(children[1]);
+	}
+
+
+	free(node);
+	nodecount--;
+}
+
+void qprintf(char* fmt, ...) {
+
+	va_list argptr;
+
+
+	if (!verbose)
+		return;
+
+	va_start(argptr, fmt);
+	
+	//printf(argptr);
+	
+	vprintf(fmt, argptr);
+	va_end(argptr);
 }

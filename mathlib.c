@@ -23,8 +23,6 @@ qbool VectorCompare(vec3_t v1, vec3_t v2) {
 		}
 	}
 
-	//if (v1[])
-
 	return qtrue;
 }
 

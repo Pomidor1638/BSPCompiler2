@@ -10,15 +10,17 @@
 #include <libc.h>
 #endif
 
-unsigned int facecount, nodecount, brushcount, entitycount, leafcount, planecount;
+unsigned int facecount, nodecount, brushcount, entitycount, leafcount, planecount, surfacecount, windingcount;
 
 void PrintMemory(void) {
+	printf("Windings: %u\n", windingcount);
 	printf("Planes: %u\n", planecount);
 	printf("Facecount: %u\n", facecount);
 	printf("Brushes: %u\n", brushcount);
 	printf("Entities: %u\n", entitycount);
 	printf("Nodes: %u\n", nodecount);
 	printf("Leafes: %u\n", leafcount);
+	printf("Surfaces %u\n", surfacecount);
 }
 
 void Error(char* error, ...)

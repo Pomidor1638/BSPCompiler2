@@ -23,8 +23,8 @@ face_t* brush_faces;
 
 void ClearBounds(brushset_t* b) {
 	for (int i = 0; i < 3; i++) {
-		b->maxs[i] = -9999999;
-		b->mins[i] =  9999999;
+		b->maxs[i] = -MAX_RANGE;
+		b->mins[i] =  MAX_RANGE;
 	}
 }
 
@@ -97,28 +97,58 @@ void AddBrushPlane(plane_t* plane) {
 	numbrushfaces++;
 }
 
-void CheckFace(face_t* f) {
-	
-	int num;
-	vec3_t* points;
-	vec3_t dir;
-	vec_t dot;
+void CheckFace(face_t* f)
+{
+	int		i, j;
+	vec_t* p1, * p2;
+	vec_t	d, edgedist;
+	vec3_t	dir, edgenormal, facenormal;
 
-
-	num = f->w->numpoints;
-
-	if (num < 3)
+	if (f->w->numpoints < 3)
 		Error("CheckFace: %i points", f->w->numpoints);
 
-	points = f->w->points;
+	VectorCopy(planes[f->planenum].normal, facenormal);
+	if (f->planeside)
+	{
+		VectorSubtract(vec3_origin, facenormal, facenormal);
+	}
 
-	for (int i = 0; i < num; i++) {
-		VectorSubtract(points[i], points[(i + 1) % num], dir);
+	for (i = 0; i < f->w->numpoints; i++)
+	{
+		p1 = f->w->points[i];
+
+		for (j = 0; j < 3; j++)
+			if (p1[j] > BOGUS_RANGE || p1[j] < -BOGUS_RANGE)
+				Error("CheckFace: BUGUS_RANGE: %f", p1[j]);
+
+		j = i + 1 == f->w->numpoints ? 0 : i + 1;
+
+		// check the point is on the face plane
+		d = DotProduct(p1, planes[f->planenum].normal) - planes[f->planenum].dist;
+		if (d < -ON_EPSILON || d > ON_EPSILON)
+			Error("CheckFace: point off plane");
+
+		// check the edge isn't degenerate
+		p2 = f->w->points[j];
+		VectorSubtract(p2, p1, dir);
+
 		if (VectorLength(dir) < ON_EPSILON)
 			Error("CheckFace: degenerate edge");
-		dot = DotProduct(planes[f->planenum].normal, points[i]) - planes[f->planeside].dist;
-		if (dot < ON_EPSILON)
-			Error("CheckFace: bad points");
+
+		CrossProduct(facenormal, dir, edgenormal);
+		VectorNormalize(edgenormal);
+		edgedist = DotProduct(p1, edgenormal);
+		edgedist += ON_EPSILON;
+
+		// all other points must be on front side
+		for (j = 0; j < f->w->numpoints; j++)
+		{
+			if (j == i)
+				continue;
+			d = DotProduct(f->w->points[j], edgenormal);
+			if (d > edgedist)
+				Error("CheckFace: non-convex");
+		}
 	}
 }
 
@@ -185,8 +215,8 @@ void CreateBrushFaces(void) {
 	brush_faces = NULL;
 
 	for (int i = 0; i < 3; i++) {
-		brush_mins[i] =  99999999;
-		brush_maxs[i] = -99999999;
+		brush_mins[i] =  MAX_RANGE;
+		brush_maxs[i] = -MAX_RANGE;
 	}
 
 	for (i = 0; i < numbrushfaces; i++) {
@@ -236,17 +266,22 @@ void CreateBrushFaces(void) {
 		f->texturenum = mf->texinfo;
 		f->next = brush_faces;
 		brush_faces = f;
+		CheckFace(f);
 	}
 }
 
 
 brush_t* LoadBrush(mbrush_t* mb, int hullnum) {
+
+	qprintf("----------LoadBrush---------\n");
+
 	brush_t* b;
 	mface_t* mf;
 	
+
 	for (int i = 0; i < 3; i++) {
-		brush_mins[i] =  9999999999;
-		brush_maxs[i] = -9999999999;
+		brush_mins[i] =  MAX_RANGE;
+		brush_maxs[i] = -MAX_RANGE;
 	}
 
 	numbrushfaces = 0;
@@ -278,14 +313,16 @@ brush_t* LoadBrush(mbrush_t* mb, int hullnum) {
 	VectorCopy(brush_mins, b->mins);
 	VectorCopy(brush_maxs, b->maxs);
 
+	b->contents = mb->contents;
 	b->faces = brush_faces;
-	//b->numfaces 
-	//planecount = numbrushfaces;
 
 	return b;
 }
 
 brushset_t* Brush_LoadEntity(entity_t* ent, int hullnum) {
+
+	qprintf("------------Brush_LoadEntity---------\n");
+
 	brushset_t* bs;
 	brush_t* b;
 	mbrush_t* mb;
