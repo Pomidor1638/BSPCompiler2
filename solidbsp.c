@@ -7,7 +7,7 @@ int		splitnodes;
 int		c_solid, c_empty, c_water;
 
 qbool		usemidsplit;
-
+qbool       useoriginalfaces;
 
 void SubdivideFace(face_t* f, face_t** prevptr) {
 
@@ -116,9 +116,9 @@ surface_t* ChooseMidPlaneFromList(surface_t* surfaces, vec3_t mins, vec3_t maxs)
 
 surface_t* ChoosePlaneFromList(surface_t* surfaces, vec3_t mins, vec3_t maxs, qbool usefloors) {
 	
-	static const unsigned int CrossKoef = 2;
-	static const unsigned int OnKoef = 0;
-	static const unsigned int AbsKoef = 1;
+	static const unsigned int CrossKoef = 1;
+	static const unsigned int OnKoef = 4;
+	static const unsigned int AbsKoef = 2;
 
 	int			j, k, l;
 	surface_t* p, * p2, * bestsurface;
@@ -345,17 +345,15 @@ void DividePlane(surface_t* in, plane_t* split, surface_t** front, surface_t** b
 
 void LinkConvexFaces(surface_t* planelist, node_t* leafnode) {
 
-	qprintf("--------LinkConvexFaces------\n");
+	qprintf("*-----------* LinkConvexFaces *----------*\n");
 	face_t* f, * next;
 	surface_t* surf, * pnext;
 	int			i, count;
-	//int fsc_surfCount;
-
+	
 	leafnode->contents = 0;
 	leafnode->planenum = -1;
 
 	count = 0;
-	//fsc_surfCount = 0;
 	for (surf = planelist; surf; surf = surf->next)
 	{
 
@@ -367,7 +365,6 @@ void LinkConvexFaces(surface_t* planelist, node_t* leafnode) {
 			else if (leafnode->contents != f->contents[0])
 				Error("Mixed face contents in leafnode");
 		}
-		//fsc_surfCount++;
 	}
 
 	if (!leafnode->contents)
@@ -391,7 +388,6 @@ void LinkConvexFaces(surface_t* planelist, node_t* leafnode) {
 		Error("LinkConvexFaces: bad contents number");
 	}
 	
-	printf("LinkConvexFaces %i\n", c_empty + c_solid + c_water);
 
 	leaffaces += count;
 	leafnode->markfaces = malloc(sizeof(face_t*) * (count + 1));
@@ -402,13 +398,23 @@ void LinkConvexFaces(surface_t* planelist, node_t* leafnode) {
 		for (f = surf->faces; f; f = next)
 		{
 			next = f->next;
-			leafnode->markfaces[i] = f->original;
+			if (useoriginalfaces) {
+				leafnode->markfaces[i] = f->original;
+				FreeFace(f);
+			}
+			else {
+				f->next = NULL;
+				leafnode->markfaces[i] = CopyFace(f);
+				FreeFace(f);
+			}
 			i++;
-			FreeFace(f);
 		}
 		FreeSurface(surf, qfalse);
 	}
 	leafnode->markfaces[i] = NULL;	// sentinal
+
+	qprintf("%5i faces linked\n", i);
+
 }
 
 
@@ -455,8 +461,8 @@ void PartitionSurfaces(surface_t* surfaces, node_t* node) {
 	int i;
 
 
-	qprintf("-------PartitionSurfaces-------\n");
-	qprintf("surface now: %p\n", surfaces);
+	qprintf("*---------* PartitionSurfaces *---------*\n");
+	//qprintf("surface now: %p\n", surfaces);
 
 	
 
@@ -464,7 +470,6 @@ void PartitionSurfaces(surface_t* surfaces, node_t* node) {
 	if (!split) {	// this is a leaf node
 		node->planenum = PLANENUM_LEAF;
 		LinkConvexFaces(surfaces, node);
-		calls++;
 		return;
 	}
 
@@ -536,20 +541,20 @@ void PartitionSurfaces(surface_t* surfaces, node_t* node) {
 
 
 
-node_t* SolidBSP(surface_t* surfhead, qbool midsplit) {
+node_t* SolidBSP(surface_t* surfhead, qbool midsplit, qbool finalbsp) {
 
 	int		i;
 	node_t* headnode;
 
-	printf("----- SolidBSP -----\n");
-	qprintf("-----midsplit= %d---\n", midsplit);
+	printf("*==============* SolidBSP *==============*\n");
+	qprintf("*------------* midsplit = %d *-----------*\n", midsplit);
 
 	headnode = AllocNode();
 	usemidsplit = midsplit;
-
+	useoriginalfaces = !finalbsp;
 	for (i = 0; i < 3; i++) {
-		headnode->mins[i] = brushset->mins[i] - 24;
-		headnode->maxs[i] = brushset->maxs[i] + 24;
+		headnode->mins[i] = brushset->mins[i] - SIDESPACE;
+		headnode->maxs[i] = brushset->maxs[i] + SIDESPACE;
 	}
 
 	splitnodes = 0;
@@ -559,22 +564,19 @@ node_t* SolidBSP(surface_t* surfhead, qbool midsplit) {
 
 	PartitionSurfaces(surfhead, headnode);
 
-	i = TreeDepth(headnode);
-
-	printf("--------Finished SolidBSP--------\n");
+	qprintf("*==========* SolidBSP finished *=========*\n");
 	printf("%5i split nodes\n", splitnodes);
-	printf("%5i solid leafs\n", c_solid);
-	printf("%5i empty leafs\n", c_empty);
-	printf("%5i water leafs\n", c_water);
-	printf("%5i leaffaces\n", leaffaces);
-	printf("%5i nodefaces\n", nodefaces);
-	printf("%5i treedepth\n", i);
+	printf("%5i solid leafs\n",    c_solid);
+	printf("%5i empty leafs\n",    c_empty);
+	printf("%5i water leafs\n",    c_water);
+	printf("%5i leaffaces\n",    leaffaces);
+	printf("%5i nodefaces\n",    nodefaces);
 
 	return headnode;
 }
 
 
-int __fastcall TreeDepth(node_t* node) {
+int TreeDepth(node_t* node) {
 	int n;
 	if (!node)
 		return 0;

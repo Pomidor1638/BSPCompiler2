@@ -9,13 +9,15 @@
 #include <memory.h>
 
 
-
 typedef unsigned char byte;
 
-extern unsigned int facecount, nodecount, brushcount, entitycount, leafcount, planecount, surfacecount, windingcount;
+extern unsigned int facecount, nodecount, brushcount, entitycount, leafcount, surfacecount, windingcount, portalcount;
 
-extern void PrintMemory(void);
-extern void Error(char* error, ...);
+extern int* planecount;
 
-                    
+extern int calls;
+
+void PrintMemory(void);
+void Error(char* error, ...);
+
 

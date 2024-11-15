@@ -1,7 +1,6 @@
 #include "qbsp.h"
 
 int		headclipnode;
-int		firstface;
 
 dplane_t PlaneTodPlane(plane_t p) {
 	dplane_t dp;
@@ -41,6 +40,28 @@ int FindFinalPlane(dplane_t* p) {
 	return numplanes - 1;
 }
 
+int FindFinalVertex(vec3_t v) {
+	dvertex_t dv;
+	float* dvertex;
+	int i, j;
+	VectorCopy(v, dv.v);
+
+	for (i = 0; i < numvert; i++) {
+		dvertex = dvertexes[i].v;
+		for (j = 0; j < 3; j++)
+			if (dvertexes[i].v[j] != dv.v[j])
+				break;
+		if (j == 3)
+			return i;
+	}
+
+	if (numvert == MAX_MAP_VERTS)
+		Error("vertnum == MAX_MAP_VERTS");
+
+	dvertexes[i] = dv;
+
+	return numvert++;
+}
 
 int		planemapping[MAX_MAP_PLANES];
 
@@ -93,32 +114,48 @@ int WriteClipNodes_r(node_t* node)
 		return num;
 	}
 
+	if (numclipnodes == MAX_MAP_CLIPNODES)
+		Error("numclipnodes == MAX_MAP_CLIPNODES");
 	// emit a clipnode
 	c = numclipnodes;
 	cn = &dclipnodes[numclipnodes];
 	numclipnodes++;
 	cn->planenum = node->outputplanenum;
-	for (i = 0; i < 2; i++)
+	for (i = 0; i < 2; i++) 
 		cn->children[i] = WriteClipNodes_r(node->children[i]);
-
 	free(node);
 	return c;
 }
 
 void WriteClipNodes(node_t* nodes) {
+
 	headclipnode = numclipnodes;
 	WriteClipNodes_r(nodes);
 }
 
+void BumpModel(int hullnum) {
+	dmodel_t* bm;
+
+	if (nummodels == MAX_MAP_MODELS)
+		Error("nummodels == MAX_MAP_MODELS");
+	bm = &dmodels[nummodels];
+	nummodels++;
+
+	bm->headnode[hullnum] = headclipnode;
+}
+
 void WriteLeaf(node_t* node) {
 
-	int i;
-	face_t* f;
+	int i, side;
+	face_t **f;
+	portal_t* prt;
 	dleaf_t* leaf_p;
 	dface_t* df;
 	dplane_t dp;
+	dportal_t* dprt;
 
 	leaf_p = &dleafs[numleafs];
+	node->outputleafnum = numleafs;
 	numleafs++;
 
 	leaf_p->contents = node->contents;
@@ -126,29 +163,40 @@ void WriteLeaf(node_t* node) {
 	VectorCopy(node->mins, leaf_p->mins);
 	VectorCopy(node->maxs, leaf_p->maxs);
 
-	leaf_p->visofs = -1;
+	//leaf_p->visofs = -1;
 
 	leaf_p->firstface = numfaces;
 
-	for (f = node->markfaces; f; f++) {
+	for (f = node->markfaces; *f; f++) {
 
 		if (numfaces == MAX_MAP_FACES)
 			Error("numfaces == MAX_MAP_FACES");
 
 		df = &dfaces[numfaces++];
 
-		df->numpoints = f->w->numpoints;
-		dp = PlaneTodPlane(planes[f->planenum]);
+		dp = PlaneTodPlane(planes[(*f)->planenum]);
 		df->planenum = FindFinalPlane(&dp);
-		df->texturenum = f->texturenum;
-		df->points = malloc(3 * sizeof(df->numpoints));
+		df->texturenum = (*f)->texturenum;
 
-		for (i = 0; i < df->points; i++)
-			df->points = f->w->points[i];
+		df->firstpoint = numvertextable;
+		df->numpoints = (*f)->w->numpoints;
+
+
+
+		for (i = 0; i < df->numpoints; i++) {
+			if (numvertextable == MAX_MAP_VERTEXTABLE)
+				Error("numvertextable == MAX_MAP_VERTEXTABLE");
+
+			dvertextable[numvertextable] = FindFinalVertex((*f)->w->points[i]);
+
+			numvertextable++;
+		}
+		FreeFace(*f);
 
 	}
 
 	leaf_p->numfaces = numfaces - leaf_p->firstface;
+
 }
 
 void WriteDrawNodes_r(node_t* node)
@@ -165,16 +213,12 @@ void WriteDrawNodes_r(node_t* node)
 	VectorCopy(node->maxs, n->maxs);
 
 	n->planenum = node->outputplanenum;
-	
 
-	for (i = 0; i < 2; i++)
-	{
-		if (node->children[i]->planenum == -1)
-		{
+	for (i = 0; i < 2; i++) {
+		if (node->children[i]->planenum == -1) {
 			if (node->children[i]->contents == CONTENTS_SOLID)
 				n->children[i] = -1;
-			else
-			{
+			else {
 				n->children[i] = -(numleafs + 1);
 				WriteLeaf(node->children[i]);
 			}
@@ -187,14 +231,34 @@ void WriteDrawNodes_r(node_t* node)
 	}
 }
 
-void BeginBSPFile(void) {
-	numleafs = 1;
-	dleafs[0].contents = CONTENTS_SOLID;
+void WriteDrawNodes(node_t* headnode) {
 
-	firstface = 0;
+	int		i;
+	int		start;
+	dmodel_t* bm;
+
+	if (nummodels == MAX_MAP_MODELS)
+		Error("nummodels == MAX_MAP_MODELS");
+
+	bm = &dmodels[nummodels];
+	nummodels++;
+
+	bm->headnode[0] = numnodes;
+	bm->firstface = numfaces;
+
+	start = numleafs;
+
+	if (headnode->contents < 0)
+		WriteLeaf(headnode);
+	else
+		WriteDrawNodes_r(headnode);
+
+	bm->numfaces = numfaces - bm->firstface;
+	bm->visleafs = numleafs - start;
+
+	for (i = 0; i < 3; i++) {
+		bm->mins[i] = headnode->mins[i];	
+		bm->maxs[i] = headnode->maxs[i];
+	}
 }
 
-
-void WriteBSPFile() {
-
-}

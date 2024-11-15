@@ -154,10 +154,10 @@ void CalcSurfaceInfo(surface_t* surf) {
 	int  i, j;
 	vec3_t  p;
 
-	qprintf("---------CalcSurfaceInfo---------\n");
+	qprintf("*-----------* CalcSurfaceInfo *----------*\n");
 
 	for (i = 0; i < 3; i++) {
-		surf->mins[i] = MAX_RANGE;
+		surf->mins[i] =  MAX_RANGE;
 		surf->maxs[i] = -MAX_RANGE;
 	}
 
@@ -206,7 +206,7 @@ surface_t* BuildSurfaces(void)
 
 		s = AllocSurface();
 		s->planenum = i;          
-		s->next = surfhead;
+		s->next = surfhead;	
 
 		surfhead = s;
 		s->faces = *f;
@@ -226,7 +226,7 @@ surface_t* CSGFaces(brushset_t* bs) {
 	face_t* f;
 	surface_t* surfhead;
 
-	qprintf("-------- CSGFaces --------\n");
+	printf("*==============* CSGFaces *==============*\n");
 
 	memset(validfaces, 0, sizeof(validfaces));
 
@@ -238,14 +238,12 @@ surface_t* CSGFaces(brushset_t* bs) {
 		
 		CopyFacesToOutside(b1);
 
-		overwrite = qfalse;
+		overwrite = 0;
 
-		for (b2 = bs->brushes; b2; b2 = b2->next)
-		{
-			
+		for (b2 = bs->brushes; b2; b2 = b2->next) {
 
 			if (b1 == b2) {
-				overwrite = qtrue;	
+				overwrite = 1;	
 				continue;
 			}
 
@@ -268,21 +266,22 @@ surface_t* CSGFaces(brushset_t* bs) {
 				FreeInside(CONTENTS_SOLID);
 		}
 
-
 		if (b1->contents != CONTENTS_SOLID)
 			SaveOutside(qtrue);	
 		else
 			SaveOutside(qfalse);
 
 		n++;
-		qprintf("Finished %i\n", n);
+		qprintf("%5i brush finished\n", n);
 	}
 
 	surfhead = BuildSurfaces();
 
-	qprintf("%5i brushfaces\n", brushfaces);
-	qprintf("%5i csgfaces\n", csgfaces);
-	qprintf("%5i mergedfaces\n", csgmergefaces);
+
+	qprintf("*==========* CSGFaces finished *=========*\n");
+	printf("%5i brushfaces\n", brushfaces);
+	printf("%5i csgfaces\n", csgfaces);
+	printf("%5i mergedfaces\n", csgmergefaces);
 
 	return surfhead;
 }

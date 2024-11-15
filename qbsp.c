@@ -5,7 +5,7 @@ qbool noclip;
 qbool nodraw;
 
 int NumWindings = 0;
-brushset_t* brushset;
+
 
 winding_t* BaseWindingForPlane(plane_t* p) {
 	int		i, x;
@@ -15,7 +15,7 @@ winding_t* BaseWindingForPlane(plane_t* p) {
 
 	// find the major axis
 
-	max = -BOGUS_RANGE;
+	max = -MAX_MAP_RANGE;
 	x = -1;
 	for (i = 0; i < 3; i++) {
 		v = fabs(p->normal[i]);
@@ -46,22 +46,22 @@ winding_t* BaseWindingForPlane(plane_t* p) {
 
 	CrossProduct(vup, p->normal, vright);
 
-	VectorScale(vup, 8192, vup);
-	VectorScale(vright, 8192, vright);
+	VectorScale(vup, MAX_RANGE, vup);
+	VectorScale(vright, MAX_RANGE, vright);
 
 	// project a really big	axis aligned box onto the plane
 	w = AllocWinding(4);
 
-	VectorSubtract(org, vright, w->points[0]);
+	VectorAdd(org, vright, w->points[0]);
 	VectorAdd(w->points[0], vup, w->points[0]);
 
-	VectorAdd(org, vright, w->points[1]);
+	VectorSubtract(org, vright, w->points[1]);
 	VectorAdd(w->points[1], vup, w->points[1]);
 
-	VectorAdd(org, vright, w->points[2]);
+	VectorSubtract(org, vright, w->points[2]);
 	VectorSubtract(w->points[2], vup, w->points[2]);
 
-	VectorSubtract(org, vright, w->points[3]);
+	VectorAdd(org, vright, w->points[3]);
 	VectorSubtract(w->points[3], vup, w->points[3]);
 
 	w->numpoints = 4;
@@ -547,4 +547,21 @@ void qprintf(char* fmt, ...) {
 	
 	vprintf(fmt, argptr);
 	va_end(argptr);
+}
+
+
+portal_t* AllocPortal(void) {
+	portal_t* p;
+
+	portalcount++;
+	
+	p = malloc(sizeof(portal_t));
+	memset(p, 0, sizeof(portal_t));
+
+	return p;
+}
+
+void FreePortal(portal_t* p) {
+	portalcount--;
+	free(p);
 }

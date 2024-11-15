@@ -3,6 +3,8 @@
 
 vec3_t brush_mins, brush_maxs;
 
+brushset_t* brushset;
+
 int			numbrushplanes;
 plane_t		planes[MAX_MAP_PLANES];
 
@@ -15,6 +17,15 @@ vec3_t	hull_size[3][2] = {
 	{ {-32,-32,-64}, { 32, 32, 24} }
 };
 
+#define	MAX_HULL_POINTS	32
+#define	MAX_HULL_EDGES	64
+
+int		num_hull_points;
+vec3_t	hull_points[MAX_HULL_POINTS];
+vec3_t	hull_corners[MAX_HULL_POINTS * 8];
+int		num_hull_edges;
+int		hull_edges[MAX_HULL_EDGES][2];
+
 face_t* brush_faces;
 
 #define	DISTEPSILON		0.005
@@ -24,7 +35,7 @@ face_t* brush_faces;
 void ClearBounds(brushset_t* b) {
 	for (int i = 0; i < 3; i++) {
 		b->maxs[i] = -MAX_RANGE;
-		b->mins[i] =  MAX_RANGE;
+		b->mins[i] = MAX_RANGE;
 	}
 }
 
@@ -48,15 +59,15 @@ int	FindPlane(plane_t* dplane, int* side) {
 		Error("FindPlane: normalization error");
 
 	pl = *dplane;
+	*side = 0;
 
 	dp = planes;
 	for (i = 0; i < numbrushplanes; i++, dp++) {
 		dot = DotProduct(dp->normal, pl.normal);
 		if (dot > 1.0 - ANGLEEPSILON && fabs(dp->dist - pl.dist) < DISTEPSILON) {
-			*side = 0;
 			return i;
 		}
-		
+
 		if (dot < -1.0 + ANGLEEPSILON && fabs(dp->dist + pl.dist) < DISTEPSILON) {
 			*side = 1;
 			return i;
@@ -86,14 +97,14 @@ void AddBrushPlane(plane_t* plane) {
 	for (i = 0; i < numbrushfaces; i++) {
 
 		pl = &faces[i].plane;
-		if (VectorCompare(pl->normal, plane->normal) 
-			&& fabs(pl->dist - plane->dist) < ON_EPSILON){
+		if (VectorCompare(pl->normal, plane->normal)
+			&& fabs(pl->dist - plane->dist) < ON_EPSILON) {
 			return;
 		}
 	}
 
 	faces[i].plane = *plane;
-	faces[i].texinfo = 0; // faces[0].texinfo;
+	faces[i].texinfo = faces[0].texinfo;
 	numbrushfaces++;
 }
 
@@ -118,7 +129,7 @@ void CheckFace(face_t* f)
 		p1 = f->w->points[i];
 
 		for (j = 0; j < 3; j++)
-			if (p1[j] > BOGUS_RANGE || p1[j] < -BOGUS_RANGE)
+			if (p1[j] > MAX_MAP_RANGE || p1[j] < -MAX_MAP_RANGE)
 				Error("CheckFace: BUGUS_RANGE: %f", p1[j]);
 
 		j = i + 1 == f->w->numpoints ? 0 : i + 1;
@@ -135,7 +146,7 @@ void CheckFace(face_t* f)
 		if (VectorLength(dir) < ON_EPSILON)
 			Error("CheckFace: degenerate edge");
 
-		CrossProduct(facenormal, dir, edgenormal);
+		CrossProduct(dir, facenormal, edgenormal);
 		VectorNormalize(edgenormal);
 		edgedist = DotProduct(p1, edgenormal);
 		edgedist += ON_EPSILON;
@@ -152,46 +163,195 @@ void CheckFace(face_t* f)
 	}
 }
 
-void ExpandBrush(int hullnum) {
-	int i, j;
-	vec_t dot;
-	vec3_t corner;
-	plane_t *p, plane;
-	mface_t* mf;
+int AddHullPoint(vec3_t p, int hullnum)
+{
+	int		i;
+	vec_t* c;
+	int		x, y, z;
 
-	for (i = 0; i < numbrushfaces; i++) {
-		mf = &faces[i];
-		p = &mf->plane;
+	for (i = 0; i < num_hull_points; i++)
+		if (VectorCompare(p, hull_points[i]))
+			return i;
 
-		VectorCopy(vec3_origin, corner);
+	VectorCopy(p, hull_points[num_hull_points]);
 
-		for (j = 0; j < 3; j++) {
-			if (p->normal[j] > 0)
-				corner[j] = hull_size[hullnum][1][j];
-			else if (p->normal[j] < 0)
-				corner[j] = hull_size[hullnum][0][j];
-		}
-		p->dist += DotProduct(p->normal, corner);
+	c = hull_corners[i * 8];
 
-		mf->texinfo = 0;
+	for (x = 0; x < 2; x++)
+		for (y = 0; y < 2; y++)
+			for (z = 0; z < 2; z++)
+			{
+				c[0] = p[0] + hull_size[hullnum][x][0];
+				c[1] = p[1] + hull_size[hullnum][y][1];
+				c[2] = p[2] + hull_size[hullnum][z][2];
+				c += 3;
+			}
 
+	if (num_hull_points == MAX_HULL_POINTS)
+		Error("MAX_HULL_POINTS");
 
+	num_hull_points++;
+
+	return i;
+}
+
+void TestAddPlane(plane_t* plane)
+{
+	int		i, c;
+	vec_t	d;
+	vec_t* corner;
+	plane_t	flip;
+	vec3_t	inv;
+	int		counts[3];
+	plane_t* pl;
+
+	// see if the plane has allready been added
+	for (i = 0; i < numbrushfaces; i++)
+	{
+		pl = &faces[i].plane;
+		if (VectorCompare(plane->normal, pl->normal) && fabs(plane->dist - pl->dist) < ON_EPSILON)
+			return;
+		VectorSubtract(vec3_origin, plane->normal, inv);
+		if (VectorCompare(inv, pl->normal) && fabs(plane->dist + pl->dist) < ON_EPSILON)
+			return;
 	}
 
-	for (i = 0; i < 3; i++) {
-		for (j = -1; j <= 1; j += 2) {
+	// check all the corner points
+	counts[0] = counts[1] = counts[2] = 0;
+	c = num_hull_points * 8;
 
+	corner = hull_corners[0];
+	for (i = 0; i < c; i++, corner += 3)
+	{
+		d = DotProduct(corner, plane->normal) - plane->dist;
+		if (d < -ON_EPSILON)
+		{
+			if (counts[0])
+				return;
+			counts[1]++;
+		}
+		else if (d > ON_EPSILON)
+		{
+			if (counts[1])
+				return;
+			counts[0]++;
+		}
+		else
+			counts[2]++;
+	}
+
+	// the plane is a seperator
+
+	if (counts[0])
+	{
+		VectorSubtract(vec3_origin, plane->normal, flip.normal);
+		flip.dist = -plane->dist;
+		plane = &flip;
+	}
+
+	AddBrushPlane(plane);
+}
+
+void AddHullEdge(vec3_t p1, vec3_t p2, int hullnum)
+{
+	int		pt1, pt2;
+	int		i;
+	int		a, b, c, d, e;
+	vec3_t	edgevec, planeorg, planevec;
+	plane_t	plane;
+	vec_t	l;
+
+	pt1 = AddHullPoint(p1, hullnum);
+	pt2 = AddHullPoint(p2, hullnum);
+
+	for (i = 0; i < num_hull_edges; i++)
+		if ((hull_edges[i][0] == pt1 && hull_edges[i][1] == pt2)
+			|| (hull_edges[i][0] == pt2 && hull_edges[i][1] == pt1))
+			return;	// allread added
+
+	if (num_hull_edges == MAX_HULL_EDGES)
+		Error("MAX_HULL_EDGES");
+
+	hull_edges[i][0] = pt1;
+	hull_edges[i][1] = pt2;
+	num_hull_edges++;
+
+	VectorSubtract(p1, p2, edgevec);
+	VectorNormalize(edgevec);
+
+	for (a = 0; a < 3; a++) {
+		b = (a + 1) % 3;
+		c = (a + 2) % 3;
+		for (d = 0; d <= 1; d++)
+			for (e = 0; e <= 1; e++) {
+				VectorCopy(p1, planeorg);
+				planeorg[b] += hull_size[hullnum][d][b];
+				planeorg[c] += hull_size[hullnum][e][c];
+
+				VectorCopy(vec3_origin, planevec);
+				planevec[a] = 1;
+
+				CrossProduct(planevec, edgevec, plane.normal);
+				l = VectorNormalize(plane.normal);
+
+				if (l < ANGLEEPSILON)
+					continue;
+
+				plane.dist = DotProduct(planeorg, plane.normal);
+				TestAddPlane(&plane);
+			}
+	}
+}
+
+
+void ExpandBrush(int hullnum)
+{
+	int		i, x, s;
+	vec3_t	corner;
+	face_t* f;
+	plane_t	plane, * p;
+
+	num_hull_points = 0;
+	num_hull_edges = 0;
+
+	// create all the hull points
+	for (f = brush_faces; f; f = f->next)
+		for (i = 0; i < f->w->numpoints; i++)
+			AddHullPoint(f->w->points[i], hullnum);
+
+	// expand all of the planes
+	for (i = 0; i < numbrushfaces; i++)
+	{
+		p = &faces[i].plane;
+		VectorCopy(vec3_origin, corner);
+		for (x = 0; x < 3; x++)
+		{
+			if (p->normal[x] > 0)
+				corner[x] = hull_size[hullnum][1][x];
+			else if (p->normal[x] < 0)
+				corner[x] = hull_size[hullnum][0][x];
+		}
+		p->dist += DotProduct(corner, p->normal);
+	}
+
+	// add any axis planes not contained in the brush to bevel off corners
+	for (x = 0; x < 3; x++)
+		for (s = -1; s <= 1; s += 2)
+		{
+			// add the plane
 			VectorCopy(vec3_origin, plane.normal);
-			plane.normal[i] = j;
-			if (j == -1)
-				plane.dist = -brush_mins[i] + -hull_size[hullnum][0][i];
+			plane.normal[x] = s;
+			if (s == -1)
+				plane.dist = -brush_mins[x] + -hull_size[hullnum][0][x];
 			else
-				plane.dist = brush_maxs[i] + hull_size[hullnum][1][i];
-
-			//printf("plane: %f, %f, %f, %f\n ", plane.normal[0], plane.normal[1], plane.normal[2], plane.dist);
+				plane.dist = brush_maxs[x] + hull_size[hullnum][1][x];
 			AddBrushPlane(&plane);
 		}
-	}
+
+	// add all of the edge bevels
+	for (f = brush_faces; f; f = f->next)
+		for (i = 0; i < f->w->numpoints; i++)
+			AddHullEdge(f->w->points[i], f->w->points[(i + 1) % f->w->numpoints], hullnum);
 }
 
 #define	ZERO_EPSILON	0.0001
@@ -199,10 +359,10 @@ void CreateBrushFaces(void) {
 
 	int		 i, j, k;
 	vec_t		   r;
-	face_t*		   f;
-	winding_t*     w;
+	face_t* f;
+	winding_t* w;
 	plane_t	   plane;
-	mface_t*      mf;
+	mface_t* mf;
 
 	if (brush_faces) {
 		face_t* next;
@@ -215,7 +375,7 @@ void CreateBrushFaces(void) {
 	brush_faces = NULL;
 
 	for (int i = 0; i < 3; i++) {
-		brush_mins[i] =  MAX_RANGE;
+		brush_mins[i] = MAX_RANGE;
 		brush_maxs[i] = -MAX_RANGE;
 	}
 
@@ -235,7 +395,7 @@ void CreateBrushFaces(void) {
 			w = ClipWinding(w, &plane, qfalse);
 		}
 
-		if (!w) 
+		if (!w)
 			continue;
 
 
@@ -263,7 +423,7 @@ void CreateBrushFaces(void) {
 		FreeWinding(w);
 
 		f->planenum = FindPlane(&mf->plane, &f->planeside);
-		f->texturenum = mf->texinfo;
+		f->texturenum = FindTexinfo(&mf->texinfo);
 		f->next = brush_faces;
 		brush_faces = f;
 		CheckFace(f);
@@ -273,24 +433,25 @@ void CreateBrushFaces(void) {
 
 brush_t* LoadBrush(mbrush_t* mb, int hullnum) {
 
-	qprintf("----------LoadBrush---------\n");
+	qprintf("*--------------* LoadBrush *-------------*\n");
 
+	face_t* f;
 	brush_t* b;
 	mface_t* mf;
-	
 
-	for (int i = 0; i < 3; i++) {
-		brush_mins[i] =  MAX_RANGE;
+	int i;
+
+	for (i = 0; i < 3; i++) {
+		brush_mins[i] = MAX_RANGE;
 		brush_maxs[i] = -MAX_RANGE;
 	}
 
 	numbrushfaces = 0;
 
-
 	for (mf = mb->faces; mf; mf = mf->next) {
 		faces[numbrushfaces] = *mf;
 		if (hullnum)
-			faces[numbrushfaces].texinfo = 0;
+			memset(&faces[numbrushfaces].texinfo, 0, sizeof(texinfo_t));
 		numbrushfaces++;
 	}
 
@@ -316,18 +477,28 @@ brush_t* LoadBrush(mbrush_t* mb, int hullnum) {
 	b->contents = mb->contents;
 	b->faces = brush_faces;
 
+	i = 0;
+	for (f = b->faces; f; f = f->next)
+		i++;
+
+
+	qprintf("%5i faces loaded\n", i);
+
 	return b;
 }
 
 brushset_t* Brush_LoadEntity(entity_t* ent, int hullnum) {
 
-	qprintf("------------Brush_LoadEntity---------\n");
+	printf("*==========* Brush_LoadEntity *==========*\n");
+
+	int bc;
 
 	brushset_t* bs;
 	brush_t* b;
 	mbrush_t* mb;
 
 	bs = AllocBrushset();
+	bc = 0;
 
 	for (mb = ent->brushes; mb; mb = mb->next) {
 		b = LoadBrush(mb, hullnum);
@@ -336,9 +507,10 @@ brushset_t* Brush_LoadEntity(entity_t* ent, int hullnum) {
 
 		AddToBounds(bs, b->mins);
 		AddToBounds(bs, b->maxs);
+		bc++;
 	}
-	
-	planecount = numbrushfaces;
+
+	printf("%5i brushes\n", bc);
 
 	return bs;
 }
