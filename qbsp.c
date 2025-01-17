@@ -1,6 +1,12 @@
 #include "qbsp.h"
 
-int NumWindings = 0;
+qbool verbose;
+qbool noclip;
+qbool nodraw;
+qbool nofill;
+int    valid;
+int	hullnum;
+
 
 winding_t* BaseWindingForPlane(plane_t* p) {
 	int		i, x;
@@ -10,7 +16,7 @@ winding_t* BaseWindingForPlane(plane_t* p) {
 
 	// find the major axis
 
-	max = -BOGUS_RANGE;
+	max = -MAX_MAP_RANGE;
 	x = -1;
 	for (i = 0; i < 3; i++) {
 		v = fabs(p->normal[i]);
@@ -19,8 +25,8 @@ winding_t* BaseWindingForPlane(plane_t* p) {
 			max = v;
 		}
 	}
-	/*if (x == -1)
-		Error("BaseWindingForPlane: no axis found");*/
+	if (x == -1)
+		Error("BaseWindingForPlane: no axis found\n");
 
 	VectorCopy(vec3_origin, vup);
 	switch (x) {
@@ -41,22 +47,22 @@ winding_t* BaseWindingForPlane(plane_t* p) {
 
 	CrossProduct(vup, p->normal, vright);
 
-	VectorScale(vup, 8192, vup);
-	VectorScale(vright, 8192, vright);
+	VectorScale(vup, MAX_RANGE, vup);
+	VectorScale(vright, MAX_RANGE, vright);
 
 	// project a really big	axis aligned box onto the plane
 	w = AllocWinding(4);
 
-	VectorSubtract(org, vright, w->points[0]);
+	VectorAdd(org, vright, w->points[0]);
 	VectorAdd(w->points[0], vup, w->points[0]);
 
-	VectorAdd(org, vright, w->points[1]);
+	VectorSubtract(org, vright, w->points[1]);
 	VectorAdd(w->points[1], vup, w->points[1]);
 
-	VectorAdd(org, vright, w->points[2]);
+	VectorSubtract(org, vright, w->points[2]);
 	VectorSubtract(w->points[2], vup, w->points[2]);
 
-	VectorSubtract(org, vright, w->points[3]);
+	VectorAdd(org, vright, w->points[3]);
 	VectorSubtract(w->points[3], vup, w->points[3]);
 
 	w->numpoints = 4;
@@ -67,23 +73,30 @@ winding_t* BaseWindingForPlane(plane_t* p) {
 winding_t* AllocWinding(int num) {
 	winding_t* w;
 	
-	if (NumWindings >= MAX_WINDINGS_COUNT || num > MAX_POINTS_ON_WINDING)
-		return NULL;
+	//if (NumWindings >= MAX_WINDINGS_COUNT || num > MAX_POINTS_ON_WINDING)
+	//	return NULL;
 
-	NumWindings++;
+
+	if (num >= MAX_POINTS_ON_WINDING)
+		Error("AllocWinding: MAX_POINTS_ON_WINDING\n");
+
 
 	w = malloc(sizeof(winding_t));
 	w->points = malloc(num * sizeof(vec3_t));
 
 	w->numpoints = 0;
 
+	windingcount++;
 	return w;
 }
 
 void FreeWinding(winding_t* w) {
 	
-	if (!w) return;
-	NumWindings--;
+
+	if (!w) 
+		return;
+	
+	windingcount--;
 	free(w->points);
 	free(w);
 }
@@ -91,6 +104,8 @@ void FreeWinding(winding_t* w) {
 winding_t* CopyWinding(winding_t* w) {
 	int			size;
 	winding_t* c;
+
+	windingcount++;
 
 	size = w->numpoints * sizeof(vec3_t);
 
@@ -100,7 +115,8 @@ winding_t* CopyWinding(winding_t* w) {
 	c->numpoints = w->numpoints;
 
 	memcpy(c->points, w->points, size);
-	
+
+
 	return c;
 }
 
@@ -147,8 +163,8 @@ winding_t* ClipWinding(winding_t* in, plane_t* split, qbool keepon) {
 	if (!counts[1])
 		return in;
 
-	maxpts = in->numpoints + 4;	// can't use counts[0]+2 because
-	// of fp grouping errors
+	maxpts = in->numpoints + 4;	
+
 	neww = AllocWinding(maxpts);
 
 	for (i = 0; i < in->numpoints; i++)
@@ -193,6 +209,7 @@ winding_t* ClipWinding(winding_t* in, plane_t* split, qbool keepon) {
 		//Error("ClipWinding: points exceeded estimate");
 
 	// free the original winding
+
 	FreeWinding(in);
 	in = CopyWinding(neww);
 	FreeWinding(neww);
@@ -211,12 +228,13 @@ void	DivideWinding(winding_t* in, plane_t* split, winding_t** front, winding_t**
 	vec3_t	mid;
 	winding_t* f, *b;
 	int		maxpts;
+	int f_count, b_count;
+
 
 	counts[0] = counts[1] = counts[2] = 0;
 
 	// determine sides for each point
-	for (i = 0; i < in->numpoints; i++)
-	{
+	for (i = 0; i < in->numpoints; i++) {
 		dot = DotProduct(in->points[i], split->normal);
 		dot -= split->dist;
 		dists[i] = dot;
@@ -224,8 +242,7 @@ void	DivideWinding(winding_t* in, plane_t* split, winding_t** front, winding_t**
 			sides[i] = SIDE_FRONT;
 		else if (dot < -ON_EPSILON)
 			sides[i] = SIDE_BACK;
-		else
-		{
+		else {
 			sides[i] = SIDE_ON;
 		}
 		counts[sides[i]]++;
@@ -235,13 +252,12 @@ void	DivideWinding(winding_t* in, plane_t* split, winding_t** front, winding_t**
 
 	*front = *back = NULL;
 
-	if (!counts[0])
-	{
+	if (!counts[0]) {
 		*back = in;
 		return;
 	}
-	if (!counts[1])
-	{
+
+	if (!counts[1]) {
 		*front = in;
 		return;
 	}
@@ -249,15 +265,13 @@ void	DivideWinding(winding_t* in, plane_t* split, winding_t** front, winding_t**
 	maxpts = in->numpoints + 4;	// can't use counts[0]+2 because
 	// of fp grouping errors
 
-	*front = f = AllocWinding(maxpts);
-	*back = b = AllocWinding(maxpts);
+	f = AllocWinding(maxpts);
+	b = AllocWinding(maxpts);
 
-	for (i = 0; i < in->numpoints; i++)
-	{
+	for (i = 0; i < in->numpoints; i++) {
 		p1 = in->points[i];
 
-		if (sides[i] == SIDE_ON)
-		{
+		if (sides[i] == SIDE_ON) {
 			VectorCopy(p1, f->points[f->numpoints]);
 			f->numpoints++;
 			VectorCopy(p1, b->points[b->numpoints]);
@@ -265,13 +279,11 @@ void	DivideWinding(winding_t* in, plane_t* split, winding_t** front, winding_t**
 			continue;
 		}
 
-		if (sides[i] == SIDE_FRONT)
-		{
+		if (sides[i] == SIDE_FRONT) {
 			VectorCopy(p1, f->points[f->numpoints]);
 			f->numpoints++;
 		}
-		if (sides[i] == SIDE_BACK)
-		{
+		if (sides[i] == SIDE_BACK) {
 			VectorCopy(p1, b->points[b->numpoints]);
 			b->numpoints++;
 		}
@@ -279,12 +291,11 @@ void	DivideWinding(winding_t* in, plane_t* split, winding_t** front, winding_t**
 		if (sides[i + 1] == SIDE_ON || sides[i + 1] == sides[i])
 			continue;
 
-		// generate a split point
 		p2 = in->points[(i + 1) % in->numpoints];
 
 		dot = dists[i] / (dists[i] - dists[i + 1]);
-		for (j = 0; j < 3; j++)
-		{	// avoid round off error when possible
+
+		for (j = 0; j < 3; j++) {
 			if (split->normal[j] == 1)
 				mid[j] = split->dist;
 			else if (split->normal[j] == -1)
@@ -299,38 +310,259 @@ void	DivideWinding(winding_t* in, plane_t* split, winding_t** front, winding_t**
 		b->numpoints++;
 	}
 
-	/*if (f->numpoints > maxpts || b->numpoints > maxpts)
-		Error("ClipWinding: points exceeded estimate");*/
+	if (f->numpoints > maxpts || b->numpoints > maxpts)
+		Error("ClipWinding: points exceeded estimate\n");
+
+	*front = CopyWinding(f);
+	*back = CopyWinding(b);
+
+	FreeWinding(f);
+	FreeWinding(b);
+	FreeWinding(in);
+
 }
 
-int numplanes;
-plane_t planes[MAX_PLANE_COUNT];
 
 face_t* AllocFace(int num) {
+
+
+
 	face_t* f;
 
 	f = malloc(sizeof(face_t));
 	memset(f, 0, sizeof(face_t));
+	f->planenum = -1;
 
 	f->w = AllocWinding(num);
 	f->w->numpoints = num;
+
+	facecount++;
+
+	return f;
 }
 
 
 void FreeFace(face_t* f) {
+
 	FreeWinding(f->w);
 	free(f);
+	facecount--;
 }
 
 face_t* CopyFace(face_t* f) {
 	face_t* c;
+	
+	facecount++;
 
 	c = malloc(sizeof(face_t));
-
 	memcpy(c, f, sizeof(face_t));
 
-	f->w = CopyWinding(f->w);
+	c->w = CopyWinding(f->w);
+
+	c->next = NULL;
+
+	return c;
+}
+
+face_t* ExtendFace(face_t* f) {
+	face_t* c;
+
+	facecount++;
+
+	c = malloc(sizeof(face_t));
+	memcpy(c, f, sizeof(face_t));
+
+	c->w = NULL;
+	c->next = NULL;
+
+	return c;
+}
+
+ 
+brush_t* AllocBrush(void) {
+	brush_t* b;
+
+	b = malloc(sizeof(brush_t));
+	memset(b, 0, sizeof(brush_t));
+
+	for (int i = 0; i < 3; i++) {
+		b->mins[i] =  MAX_RANGE;
+		b->maxs[i] = -MAX_RANGE;
+	}
+
+	brushcount++;
+
+	return b;
 }
 
 
+void FreeBrush(brush_t* b) {
+	face_t* f;
+	face_t* next;
+	for (f = b->faces; f; f = next) {
+		next = f->next;
+		FreeFace(f);
+	}
+	free(b);
+	brushcount--;
+}
 
+
+brushset_t* AllocBrushset() {
+	brushset_t* bs;
+	bs = malloc(sizeof(brushset_t));
+	memset(bs, 0, sizeof(brushset_t));
+
+	for (int i = 0; i < 3; i++) {
+		bs->mins[i] =  MAX_RANGE;
+		bs->maxs[i] = -MAX_RANGE;
+	}
+
+
+	return bs;
+}
+
+void FreeBrushset(brushset_t* bs) {
+	brush_t* b;
+	brush_t* next;
+
+
+	for (b = bs->brushes; b; b = next) {
+		next = b->next;
+		FreeBrush(b);
+	}
+
+}
+
+
+surface_t* AllocSurface() {
+
+	surface_t* surf = malloc(sizeof(surface_t));
+	memset(surf, 0, sizeof(surface_t));
+
+	for (int i = 0; i < 3; i++) {
+		surf->mins[i] =  MAX_RANGE;
+		surf->maxs[i] = -MAX_RANGE;
+	}
+
+	surfacecount++;
+
+
+	return surf;
+
+}
+
+surface_t* CopySurface(surface_t* surface, qbool copyfaces) {
+	surface_t* news;
+	face_t* f, *nf, *list;
+
+	news = AllocSurface();
+
+	memcpy(news, surface, sizeof(surface_t));
+
+	news->faces = NULL;
+
+	if (copyfaces) {
+		for (f = surface->faces; f; f = f->next) {			
+
+			nf = CopyFace(f);
+
+			nf->next = news->faces;
+
+			news->faces = nf;
+
+		}
+	}
+
+	return news;
+}
+
+void FreeSurface(surface_t* surf, qbool freeface) {
+	face_t *f, *next;
+
+
+	if (freeface) {
+		for (f = surf->faces; f; f = next) {
+			next = f->next;
+			FreeFace(f);
+		}
+	}
+
+	free(surf);
+	surfacecount--;
+}
+
+node_t* AllocNode() {
+	nodecount++;
+	node_t* node = malloc(sizeof(node_t));
+	memset(node, 0, sizeof(node_t));
+
+	node->planenum = -1;
+
+	for (int i = 0; i < 3; i++) {
+		node->mins[i] =  MAX_RANGE;
+		node->maxs[i] = -MAX_RANGE;
+	}
+
+	return node;
+
+}
+
+void FreeNode_r(node_t* node) {
+
+	face_t *f, *next;
+	node_t* children[2];
+
+	if (!node)
+		return;
+
+	children[0] = node->children[0];
+	children[1] = node->children[1];
+
+
+	if (node->planenum != PLANENUM_LEAF) {
+		for (f = node->faces; f; f = next) {
+			next = f->next;
+			FreeFace(f);
+		}
+		FreeNode_r(children[0]);
+		FreeNode_r(children[1]);
+	}
+
+
+	free(node);
+	nodecount--;
+}
+
+void qprintf(char* fmt, ...) {
+
+	va_list argptr;
+
+
+	if (!verbose)
+		return;
+
+	va_start(argptr, fmt);
+	
+	//printf(argptr);
+	
+	vprintf(fmt, argptr);
+	va_end(argptr);
+}
+
+
+portal_t* AllocPortal(void) {
+	portal_t* p;
+
+	portalcount++;
+	
+	p = malloc(sizeof(portal_t));
+	memset(p, 0, sizeof(portal_t));
+
+	return p;
+}
+
+void FreePortal(portal_t* p) {
+	portalcount--;
+	free(p);
+}

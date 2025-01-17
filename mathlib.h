@@ -1,12 +1,14 @@
 #pragma once
 #include <math.h> 
 
-typedef float vec_t;
+typedef double vec_t;
 typedef vec_t vec3_t[3];
 
 extern vec3_t vec3_origin;
 
 typedef enum { qfalse, qtrue } qbool;
+
+
 
 typedef enum {
 	SIDE_FRONT =  0,
@@ -27,19 +29,19 @@ typedef enum {
 #define VectorInverse(v) {v[0]=-v[0];v[1]=-v[1];v[2]=-v[2];} 
 #define DotProduct(v1, v2) (v1[0]*v2[0]+v1[1]*v2[1]+v1[2]*v2[2])
 #define VectorLength(v) (sqrt(v[0]*v[0]+v[1]*v[1]+v[2]*v[2]))
-#define CrossProduct(a, b, c) {c[0]=a[1]*b[2]-a[2]*b[1]; c[1]=a[2]*b[0]-a[0]*b[2];c[2]=a[0]*b[1]-a[1]*b[0];}
+#define CrossProduct(a, b, c) {c[0]=a[1]*b[2]-a[2]*b[1];c[1]=a[2]*b[0]-a[0]*b[2];c[2]=a[0]*b[1]-a[1]*b[0];}
 
 
-#define LENGTH_EPSILON 0.001
+#define LENGTH_EPSILON 0.0001
 
-extern vec_t VectorNormalize(vec3_t vector);
+vec_t VectorNormalize(vec3_t vector);
 
-#define COMPARE_EPSILON 0.0005
+#define COMPARE_EPSILON 0.0001
 
-extern qbool VectorCompare(vec3_t v1, vec3_t v2, qbool inv);
+qbool VectorCompare(vec3_t v1, vec3_t v2);
 
 
 #define Q_round(a) (floor(a + 0.5))
 
-extern int sgn(double x, double accuracy);
-extern int Q_sgn(float x);
+int sgn(double x, double accuracy);
+int Q_sgn(float x);
