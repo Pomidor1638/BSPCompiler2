@@ -1,10 +1,11 @@
 #include "qbsp.h"
 
-qbool verbose = qtrue;
+qbool verbose;
 qbool noclip;
 qbool nodraw;
-
-int NumWindings = 0;
+qbool nofill;
+int    valid;
+int	hullnum;
 
 
 winding_t* BaseWindingForPlane(plane_t* p) {

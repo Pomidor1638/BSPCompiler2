@@ -114,32 +114,39 @@ surface_t* ChooseMidPlaneFromList(surface_t* surfaces, vec3_t mins, vec3_t maxs)
 	return bestsurface;
 }
 
-surface_t* ChoosePlaneFromList(surface_t* surfaces, vec3_t mins, vec3_t maxs, qbool usefloors) {
-	
-	static const unsigned int CrossKoef = 1;
-	static const unsigned int OnKoef = 4;
-	static const unsigned int AbsKoef = 2;
 
-	int			j, k, l;
+surface_t* ChoosePlaneFromList(surface_t* surfaces, vec3_t mins, vec3_t maxs) {
+	
+
+	int			i;
 	surface_t* p, * p2, * bestsurface;
 	plane_t* plane;
 	face_t* f;
 
-	size_t back, cross, front, on;
-	size_t bestvalue, value;
+	qbool axial;
+	long long back, cross, front, on;
+	long long bestvalue, value;
 
-	bestvalue = MAX_RANGE;
+	memset(&bestvalue, 0xff, sizeof(bestvalue));
+	bestvalue = (size_t)bestvalue >> 1;
 	bestsurface = NULL;
 
-	for (p = bestsurface; p; p = p->next) {
+	for (p = surfaces; p; p = p->next) {
 		
 		if (p->onnode)
 			continue;
 		
 		plane = &planes[p->planenum];
-		front = cross = back = on = 0;
 
-		for (p2 = bestsurface; p2; p2 = p2->next) {
+		axial = front = cross = back = on = 0;
+
+		for (i = 0; i < 3; i++) {
+			if (plane->normal[i] == 1) {
+				axial = qtrue;
+				break;
+			}
+		}
+		for (p2 = surfaces; p2; p2 = p2->next) {
 			if (p2->onnode || p2 == p)
 				continue;
 			for (f = p2->faces; f; f = f->next) {
@@ -165,7 +172,14 @@ surface_t* ChoosePlaneFromList(surface_t* surfaces, vec3_t mins, vec3_t maxs, qb
 
 		}
 
-		value = AbsKoef*abs(front - back) + OnKoef*on + CrossKoef*cross;
+#define CROSS_KOEF 100
+#define ABS_KOEF 1000
+#define NON_AXIAL_KOEF 10000
+		
+		value = ABS_KOEF * abs(front - back) + CROSS_KOEF * cross;
+
+		if (!axial)
+			value += NON_AXIAL_KOEF;
 
 		if (value < bestvalue) {
 			bestvalue = value;
@@ -224,7 +238,7 @@ surface_t* SelectPartition(surface_t* surfaces) {
 	if (usemidsplit) 
 		return ChooseMidPlaneFromList(surfaces, mins, maxs);
 	
-	return ChoosePlaneFromList(surfaces, mins, maxs, qtrue);
+	return ChoosePlaneFromList(surfaces, mins, maxs);
 }
 
 void DividePlane(surface_t* in, plane_t* split, surface_t** front, surface_t** back) {
@@ -400,19 +414,19 @@ void LinkConvexFaces(surface_t* planelist, node_t* leafnode) {
 			next = f->next;
 			if (useoriginalfaces) {
 				leafnode->markfaces[i] = f->original;
-				FreeFace(f);
 			}
 			else {
 				f->next = NULL;
 				leafnode->markfaces[i] = CopyFace(f);
-				FreeFace(f);
 			}
+			FreeFace(f);
 			i++;
 		}
 		FreeSurface(surf, qfalse);
 	}
 	leafnode->markfaces[i] = NULL;	// sentinal
 
+	qprintf("%5i leafs   done\n", c_empty + c_solid + c_water);
 	qprintf("%5i faces linked\n", i);
 
 }
@@ -472,9 +486,9 @@ void PartitionSurfaces(surface_t* surfaces, node_t* node) {
 		LinkConvexFaces(surfaces, node);
 		return;
 	}
-
+		/*
 	qprintf("node maxs: %f, %f, %f\n", (float)node->maxs[0], (float)node->maxs[1], (float)node->maxs[2]);
-	qprintf("node mins: %f, %f, %f\n", (float)node->mins[0], (float)node->mins[1], (float)node->mins[2]);
+	qprintf("node mins: %f, %f, %f\n", (float)node->mins[0], (float)node->mins[1], (float)node->mins[2]);*/
 
 	splitnodes++;
 	node->faces = LinkNodeFaces(split);
@@ -563,7 +577,7 @@ node_t* SolidBSP(surface_t* surfhead, qbool midsplit, qbool finalbsp) {
 	c_solid = c_empty = c_water = 0;
 
 	PartitionSurfaces(surfhead, headnode);
-
+	i = TreeDepth(headnode);
 	qprintf("*==========* SolidBSP finished *=========*\n");
 	printf("%5i split nodes\n", splitnodes);
 	printf("%5i solid leafs\n",    c_solid);
@@ -571,6 +585,7 @@ node_t* SolidBSP(surface_t* surfhead, qbool midsplit, qbool finalbsp) {
 	printf("%5i water leafs\n",    c_water);
 	printf("%5i leaffaces\n",    leaffaces);
 	printf("%5i nodefaces\n",    nodefaces);
+	printf("%5i treedepth\n",			 i);
 
 	return headnode;
 }
@@ -581,6 +596,9 @@ int TreeDepth(node_t* node) {
 	if (!node)
 		return 0;
 
-	n = max(TreeDepth(node->children[0]), TreeDepth(node->children[1]));
+	int first = TreeDepth(node->children[0]);
+	int second = TreeDepth(node->children[1]);
+
+	n = max(first, second);
 	return 1 + n;
 }

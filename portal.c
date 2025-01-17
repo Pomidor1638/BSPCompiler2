@@ -221,10 +221,11 @@ void CutNodePortals_r(node_t* node)
 
 
 void PortalizeWorld(node_t* headnode) {
-	qprintf("*=============* portalize *==============*\n");
+	printf("*=============* portalize *==============*\n");
 
 	MakeHeadnodePortals(headnode);
 	CutNodePortals_r(headnode);
+	printf("%5i portals\n", portalcount);
 }
 
 void FreeAllPortals(node_t* node)
@@ -279,6 +280,7 @@ void WritePortals_r(node_t* node) {
 
 	int		   i, side;
 	dportal_t     dprt;
+	dplane_t	dplane;
 	dleaf_t*     dleaf;
 	node_t* other_node;
 	portal_t*      prt;
@@ -310,10 +312,10 @@ void WritePortals_r(node_t* node) {
 
 		 other_node = prt->nodes[!side];
 
-		 if ((other_node->contents == CONTENTS_SOLID || node->contents != other_node->contents) && other_node != &outside_node)
+		 if ((other_node->contents == CONTENTS_SOLID || node->contents != other_node->contents))
 			 continue;
-
-		dprt.planenum     = prt->planenum;
+		dplane = PlaneTodPlane(planes[prt->planenum]);
+		dprt.planenum     = FindFinalPlane(&dplane);
 		dprt.leafs[ side] = node->outputleafnum;
 		dprt.leafs[!side] = other_node->outputleafnum;
 		w = prt->winding;

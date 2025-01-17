@@ -1,0 +1,54 @@
+﻿  brush.c
+C:\Users\UBER_USER\source\repos\BSPCompiler2\BSPCompiler2\mathlib.h(18,2): warning C4091: typedef : пропускается слева от "<unnamed-enum-SIDE_FRONT>", когда ни одна переменная не объявлена
+  (компиляция исходного файла "brush.c")
+  
+C:\Users\UBER_USER\source\repos\BSPCompiler2\BSPCompiler2\brush.c(84,6): warning C4244: =: преобразование "double" в "float", возможна потеря данных
+C:\Users\UBER_USER\source\repos\BSPCompiler2\BSPCompiler2\brush.c(159,8): warning C4101: dot: неиспользованная локальная переменная
+  bspfile.c
+C:\Users\UBER_USER\source\repos\BSPCompiler2\BSPCompiler2\bspfile.c(60,3): warning C4013: Error: нет определения; предполагается "extern" с возвратом типа "int"
+  csg.c
+C:\Users\UBER_USER\source\repos\BSPCompiler2\BSPCompiler2\mathlib.h(18,2): warning C4091: typedef : пропускается слева от "<unnamed-enum-SIDE_FRONT>", когда ни одна переменная не объявлена
+  (компиляция исходного файла "csg.c")
+  
+  main.c
+C:\Users\UBER_USER\source\repos\BSPCompiler2\BSPCompiler2\mathlib.h(18,2): warning C4091: typedef : пропускается слева от "<unnamed-enum-SIDE_FRONT>", когда ни одна переменная не объявлена
+  (компиляция исходного файла "main.c")
+  
+C:\Users\UBER_USER\source\repos\BSPCompiler2\BSPCompiler2\main.c(102,10): warning C4101: f: неиспользованная локальная переменная
+C:\Users\UBER_USER\source\repos\BSPCompiler2\BSPCompiler2\main.c(103,20): warning C4101: s: неиспользованная локальная переменная
+  qbsp.c
+C:\Users\UBER_USER\source\repos\BSPCompiler2\BSPCompiler2\mathlib.h(18,2): warning C4091: typedef : пропускается слева от "<unnamed-enum-SIDE_FRONT>", когда ни одна переменная не объявлена
+  (компиляция исходного файла "qbsp.c")
+  
+C:\Users\UBER_USER\source\repos\BSPCompiler2\BSPCompiler2\qbsp.c(230,15): warning C4101: b_count: неиспользованная локальная переменная
+C:\Users\UBER_USER\source\repos\BSPCompiler2\BSPCompiler2\qbsp.c(230,6): warning C4101: f_count: неиспользованная локальная переменная
+C:\Users\UBER_USER\source\repos\BSPCompiler2\BSPCompiler2\qbsp.c(456,19): warning C4101: list: неиспользованная локальная переменная
+  solidbsp.c
+C:\Users\UBER_USER\source\repos\BSPCompiler2\BSPCompiler2\mathlib.h(18,2): warning C4091: typedef : пропускается слева от "<unnamed-enum-SIDE_FRONT>", когда ни одна переменная не объявлена
+  (компиляция исходного файла "solidbsp.c")
+  
+C:\Users\UBER_USER\source\repos\BSPCompiler2\BSPCompiler2\solidbsp.c(123,11): warning C4101: k: неиспользованная локальная переменная
+C:\Users\UBER_USER\source\repos\BSPCompiler2\BSPCompiler2\solidbsp.c(123,14): warning C4101: l: неиспользованная локальная переменная
+C:\Users\UBER_USER\source\repos\BSPCompiler2\BSPCompiler2\solidbsp.c(123,8): warning C4101: j: неиспользованная локальная переменная
+C:\Users\UBER_USER\source\repos\BSPCompiler2\BSPCompiler2\solidbsp.c(232,33): warning C4101: list: неиспользованная локальная переменная
+  writebsp.c
+C:\Users\UBER_USER\source\repos\BSPCompiler2\BSPCompiler2\mathlib.h(18,2): warning C4091: typedef : пропускается слева от "<unnamed-enum-SIDE_FRONT>", когда ни одна переменная не объявлена
+  (компиляция исходного файла "writebsp.c")
+  
+C:\Users\UBER_USER\source\repos\BSPCompiler2\BSPCompiler2\writebsp.c(8,13): warning C4244: =: преобразование "vec_t" в "float", возможна потеря данных
+C:\Users\UBER_USER\source\repos\BSPCompiler2\BSPCompiler2\writebsp.c(10,25): warning C4244: =: преобразование "vec_t" в "float", возможна потеря данных
+C:\Users\UBER_USER\source\repos\BSPCompiler2\BSPCompiler2\writebsp.c(11,25): warning C4244: =: преобразование "vec_t" в "float", возможна потеря данных
+C:\Users\UBER_USER\source\repos\BSPCompiler2\BSPCompiler2\writebsp.c(12,25): warning C4244: =: преобразование "vec_t" в "float", возможна потеря данных
+C:\Users\UBER_USER\source\repos\BSPCompiler2\BSPCompiler2\writebsp.c(61,36): warning C4244: =: преобразование "vec_t" в "float", возможна потеря данных
+C:\Users\UBER_USER\source\repos\BSPCompiler2\BSPCompiler2\writebsp.c(62,36): warning C4244: =: преобразование "vec_t" в "float", возможна потеря данных
+C:\Users\UBER_USER\source\repos\BSPCompiler2\BSPCompiler2\writebsp.c(63,36): warning C4244: =: преобразование "vec_t" в "float", возможна потеря данных
+C:\Users\UBER_USER\source\repos\BSPCompiler2\BSPCompiler2\writebsp.c(64,23): warning C4244: =: преобразование "vec_t" в "float", возможна потеря данных
+C:\Users\UBER_USER\source\repos\BSPCompiler2\BSPCompiler2\writebsp.c(125,2): warning C4244: =: преобразование "vec_t" в "float", возможна потеря данных
+C:\Users\UBER_USER\source\repos\BSPCompiler2\BSPCompiler2\writebsp.c(126,2): warning C4244: =: преобразование "vec_t" в "float", возможна потеря данных
+C:\Users\UBER_USER\source\repos\BSPCompiler2\BSPCompiler2\writebsp.c(152,4): warning C4244: =: преобразование "vec_t" в "float", возможна потеря данных
+C:\Users\UBER_USER\source\repos\BSPCompiler2\BSPCompiler2\writebsp.c(171,2): warning C4244: =: преобразование "vec_t" в "float", возможна потеря данных
+C:\Users\UBER_USER\source\repos\BSPCompiler2\BSPCompiler2\writebsp.c(172,2): warning C4244: =: преобразование "vec_t" в "float", возможна потеря данных
+C:\Users\UBER_USER\source\repos\BSPCompiler2\BSPCompiler2\writebsp.c(219,31): warning C4244: =: преобразование "vec_t" в "float", возможна потеря данных
+C:\Users\UBER_USER\source\repos\BSPCompiler2\BSPCompiler2\writebsp.c(220,31): warning C4244: =: преобразование "vec_t" в "float", возможна потеря данных
+  Создание кода...
+  BSPCompiler2.vcxproj -> C:\Users\UBER_USER\source\repos\BSPCompiler2\BSPCompiler2\Debug\BSPCompiler2.exe

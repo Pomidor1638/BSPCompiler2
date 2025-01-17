@@ -19,8 +19,8 @@ dplane_t       dplanes[MAX_MAP_PLANES];
 int			   numnodes;
 dnode_t		   dnodes[MAX_MAP_NODES];
 			   
-int			   numtexinfo;
-texinfo_t	   texinfo[MAX_MAP_TEXINFO];
+int			   numdtexinfo;
+dtexinfo_t	   dtexinfo[MAX_MAP_TEXINFO];
 			   
 int			   numvert;
 dvertex_t	   dvertexes[MAX_MAP_VERTS];
@@ -48,7 +48,7 @@ dheader_t header;
 void PrintBSPFileSizes(void) {
 	printf("%6i planes         %7i\n", numplanes, (int)(numplanes * sizeof(dplane_t)));
 	printf("%6i nodes          %7i\n", numnodes, (int)(numnodes * sizeof(dnode_t)));
-	printf("%6i texinfo        %7i\n", numtexinfo, (int)(numtexinfo * sizeof(texinfo_t)));
+	printf("%6i texinfo        %7i\n", numdtexinfo, (int)(numdtexinfo * sizeof(dtexinfo_t)));
 	printf("%6i vertexes       %7i\n", numvert, (int)(numvert * sizeof(dvertex_t)));
 	printf("%6i vertindexes    %7i\n", numvertextable, (int)(numvertextable * sizeof(dvertextable[0])));
 	printf("%6i faces          %7i\n", numfaces, (int)(numfaces * sizeof(dface_t)));
@@ -121,7 +121,7 @@ void WriteBSPFile() {
 	AddLump(LUMP_NODES, dnodes, numnodes * sizeof(dnode_t));
 	AddLump(LUMP_LEAFS, dleafs, numleafs * sizeof(dleaf_t));
 	AddLump(LUMP_CLIPNODES, dclipnodes, numclipnodes * sizeof(dclipnode_t));
-	AddLump(LUMP_TEXINFO, texinfo, numtexinfo * sizeof(texinfo_t));
+	AddLump(LUMP_TEXINFO, dtexinfo, numdtexinfo * sizeof(dtexinfo_t));
 	AddLump(LUMP_LIGHTING, dlightdata, lightdatasize);
 	AddLump(LUMP_ENTITIES, dentdata, entdatasize);
 	AddLump(LUMP_MODELS, dmodels, nummodels * sizeof(dmodel_t));
@@ -134,7 +134,7 @@ void WriteBSPFile() {
 
 void BeginBSPFile() {
 	numleafs = 1;
-	numtexinfo = 1;
+	numdtexinfo = 1;
 	dleafs[0].contents = CONTENTS_SOLID;
 }
 

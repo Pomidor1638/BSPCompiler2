@@ -16,12 +16,12 @@ typedef dvec_t dvec3_t[3];
 #define	MAX_MAP_ENTITIES	1023
 #define	MAX_MAP_ENTSTRING	65535
 
-#define	MAX_MAP_PLANES		8192
-#define	MAX_MAP_NODES		8192
-#define	MAX_MAP_CLIPNODES	8192
-#define	MAX_MAP_LEAFS		8192	
+#define	MAX_MAP_PLANES		16384
+#define	MAX_MAP_NODES		16384
+#define	MAX_MAP_CLIPNODES	16384
+#define	MAX_MAP_LEAFS		16384	
 #define	MAX_MAP_VERTS		32768
-#define	MAX_MAP_VERTEXTABLE 65535*2
+#define	MAX_MAP_VERTEXTABLE 65536*2
 #define	MAX_MAP_FACES		32768	
 #define MAX_MAP_PORTALS     32768
 #define MAX_MAP_PORTALTABLE 32768
@@ -96,6 +96,7 @@ typedef struct {
 typedef struct {
 
 	short planenum;
+	byte side;
 	short texturenum;
 
 	unsigned int firstpoint;
@@ -151,7 +152,7 @@ typedef struct {
 	int flags;
 	int texturenum;
 
-} texinfo_t;
+} dtexinfo_t;
 
 extern int			  nummodels;
 extern dmodel_t	      dmodels[MAX_MAP_MODELS];
@@ -171,8 +172,8 @@ extern dplane_t		  dplanes[MAX_MAP_PLANES];
 extern int			  numnodes;
 extern dnode_t		  dnodes[MAX_MAP_NODES];
 					  
-extern int			  numtexinfo;
-extern texinfo_t	  texinfo[MAX_MAP_TEXINFO];
+extern int			  numdtexinfo;
+extern dtexinfo_t	  dtexinfo[MAX_MAP_TEXINFO];
 					  
 extern int			  numvert;
 extern dvertex_t	  dvertexes[MAX_MAP_VERTS];

@@ -151,7 +151,7 @@ void CopyFacesToOutside(brush_t* b)
 
 void CalcSurfaceInfo(surface_t* surf) {
 	face_t *f;
-	int  i, j;
+	int  i, j, num;
 	vec3_t  p;
 
 	qprintf("*-----------* CalcSurfaceInfo *----------*\n");
@@ -160,7 +160,7 @@ void CalcSurfaceInfo(surface_t* surf) {
 		surf->mins[i] =  MAX_RANGE;
 		surf->maxs[i] = -MAX_RANGE;
 	}
-
+	num = 0;
 	for (f = surf->faces; f; f = f->next) {
 		
 		if (f->contents[0] >= 0 || f->contents[1] >= 0)
@@ -177,13 +177,12 @@ void CalcSurfaceInfo(surface_t* surf) {
 					surf->maxs[j] = p[j];
 			}
 		}
+		num++;
 	}
 
 	VectorCopy(surf->mins, p);
-	qprintf("Surf mins: %f, %f, %f\n", (float)p[0], (float)p[1], (float)p[2]);
-
 	VectorCopy(surf->maxs, p);
-	qprintf("Surf maxs: %f, %f, %f\n", (float)p[0], (float)p[1], (float)p[2]);
+	qprintf("%5i faces\n", num);
 
 }
 
@@ -286,3 +285,38 @@ surface_t* CSGFaces(brushset_t* bs) {
 	return surfhead;
 }
 
+int deletedfaces;
+
+void GatherNodeFaces_r(node_t* node) {
+	face_t* f, * next;
+
+	if (node->planenum != PLANENUM_LEAF) {
+		for (f = node->faces; f; f = next) {
+			next = f->next;
+			if (f->marked) {	
+				FreeFace(f);
+				deletedfaces++;
+			}
+			else {
+				f->next = validfaces[f->planenum];
+				validfaces[f->planenum] = f;
+			}
+		}
+
+		GatherNodeFaces_r(node->children[0]);
+		GatherNodeFaces_r(node->children[1]);
+
+		free(node);
+	}
+	else {
+		free(node);
+	}
+}
+
+surface_t* GatherNodeFaces(node_t* headnode) {
+	qprintf("*===========* GatherNodeFaces *===========*\n");
+	memset(validfaces, 0, sizeof(validfaces));
+	GatherNodeFaces_r(headnode);
+	qprintf("%5i faces deleted\n", deletedfaces);
+	return BuildSurfaces();
+}

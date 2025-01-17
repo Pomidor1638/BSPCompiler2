@@ -1,12 +1,21 @@
 #include "qbsp.h"
 
+int			nummapbrushes;
+mbrush_t	mapbrushes[MAX_MAP_BRUSHES];
+
+int			num_entities;
+entity_t	entities[MAX_MAP_ENTITIES];
+
+int numtexinfo;
+dtexinfo_t texinfo[MAX_MAP_TEXINFO];
+
 vec3_t	baseaxis[18] = {
-	{ 0, 0, 1}, { 1 ,0, 0}, { 0,-1, 0},			// floor
-	{ 0, 0,-1}, { 1, 0, 0}, { 0,-1, 0},		// ceiling
-	{ 1, 0, 0}, { 0, 1, 0}, { 0, 0,-1},			// west wall
-	{-1, 0, 0}, { 0, 1, 0}, { 0, 0,-1},		// east wall
-	{ 0, 1, 0}, { 1, 0, 0}, { 0, 0,-1},			// south wall
-	{ 0,-1, 0}, { 1, 0, 0}, { 0, 0,-1}			// north wall
+	{ 0, 0, 1}, { 1 ,0, 0}, { 0,-1, 0},		// floor
+	{ 0, 0,-1}, { 1, 0, 0}, { 0, 1, 0},		// ceiling
+	{ 1, 0, 0}, { 0, 1, 0}, { 0, 0,-1},		// west wall
+	{-1, 0, 0}, { 0,-1, 0}, { 0, 0,-1},		// east wall
+	{ 0, 1, 0}, {-1, 0, 0}, { 0, 0,-1},		// south wall
+	{ 0,-1, 0}, { 1, 0, 0}, { 0, 0,-1}		// north wall
 };
 
 void TextureAxisFromPlane(plane_t* pln, vec3_t xv, vec3_t yv) {
@@ -29,14 +38,14 @@ void TextureAxisFromPlane(plane_t* pln, vec3_t xv, vec3_t yv) {
 	VectorCopy(baseaxis[bestaxis * 3 + 2], yv);
 }
 
-int FindTexinfo(texinfo_t* t) {
+int FindTexinfo(dtexinfo_t* t) {
 	int i;
-	texinfo_t* cmp;
+	dtexinfo_t* cmp;
 
 	cmp = texinfo;
 
 	for (i = 0; i < numtexinfo; i++) {
-		if (memcmp(t, cmp, sizeof(texinfo_t)) == 0)
+		if (memcmp(t, cmp, sizeof(dtexinfo_t)) == 0)
 			return i;
 		cmp++;
 	}
@@ -46,6 +55,27 @@ int FindTexinfo(texinfo_t* t) {
 
 	texinfo[numtexinfo] = *t;
 	numtexinfo++;
+
+	return i;
+}
+
+int FindFinalTexinfo(dtexinfo_t* t) {
+	int i;
+	dtexinfo_t* cmp;
+
+	cmp = dtexinfo;
+
+	for (i = 0; i < numdtexinfo; i++) {
+		if (memcmp(t, cmp, sizeof(dtexinfo_t)) == 0)
+			return i;
+		cmp++;
+	}
+
+	if (numdtexinfo == MAX_MAP_TEXINFO)
+		Error("numtexinfo == MAX_MAP_TEXINFO");
+
+	dtexinfo[numdtexinfo] = *t;
+	numdtexinfo++;
 
 	return i;
 }

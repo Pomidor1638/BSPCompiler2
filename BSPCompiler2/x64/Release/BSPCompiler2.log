@@ -1,0 +1,12 @@
+﻿  brush.c
+C:\Users\UBER_USER\source\repos\BSPCompiler2\BSPCompiler2\mathlib.h(18,2): warning C4091: typedef : пропускается слева от "<unnamed-enum-SIDE_FRONT>", когда ни одна переменная не объявлена
+  (компиляция исходного файла "brush.c")
+  
+C:\Users\UBER_USER\source\repos\BSPCompiler2\BSPCompiler2\brush.c(84,6): warning C4244: =: преобразование "double" в "float", возможна потеря данных
+C:\Users\UBER_USER\source\repos\BSPCompiler2\BSPCompiler2\brush.c(159,8): warning C4101: dot: неиспользованная локальная переменная
+  Создание кода
+  2 of 72 functions ( 2.8%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    2 functions had inline decision re-evaluated but remain unchanged
+  Создание кода завершено
+  BSPCompiler2.vcxproj -> C:\Users\UBER_USER\source\repos\BSPCompiler2\BSPCompiler2\x64\Release\BSPCompiler2.exe

@@ -110,7 +110,6 @@ int WriteClipNodes_r(node_t* node)
 	if (node->planenum == -1)
 	{
 		num = node->contents;
-		free(node);
 		return num;
 	}
 
@@ -123,7 +122,6 @@ int WriteClipNodes_r(node_t* node)
 	cn->planenum = node->outputplanenum;
 	for (i = 0; i < 2; i++) 
 		cn->children[i] = WriteClipNodes_r(node->children[i]);
-	free(node);
 	return c;
 }
 
@@ -176,7 +174,8 @@ void WriteLeaf(node_t* node) {
 
 		dp = PlaneTodPlane(planes[(*f)->planenum]);
 		df->planenum = FindFinalPlane(&dp);
-		df->texturenum = (*f)->texturenum;
+		df->side = (*f)->planeside;
+		df->texturenum = FindFinalTexinfo(&texinfo[(*f)->texturenum]);
 
 		df->firstpoint = numvertextable;
 		df->numpoints = (*f)->w->numpoints;
@@ -191,7 +190,6 @@ void WriteLeaf(node_t* node) {
 
 			numvertextable++;
 		}
-		FreeFace(*f);
 
 	}
 

@@ -11,7 +11,7 @@ plane_t		planes[MAX_MAP_PLANES];
 int			numbrushfaces;
 mface_t		faces[MAX_FACES];
 
-vec3_t	hull_size[3][2] = {
+const vec3_t	hull_size[3][2] = {
 	{ {  0,  0,  0}, {  0,  0,  0} },
 	{ {-16,-16,-32}, { 16, 16, 24} },
 	{ {-32,-32,-64}, { 32, 32, 24} }
@@ -442,7 +442,7 @@ brush_t* LoadBrush(mbrush_t* mb, int hullnum) {
 	int i;
 
 	for (i = 0; i < 3; i++) {
-		brush_mins[i] = MAX_RANGE;
+		brush_mins[i] =  MAX_RANGE;
 		brush_maxs[i] = -MAX_RANGE;
 	}
 
@@ -451,7 +451,7 @@ brush_t* LoadBrush(mbrush_t* mb, int hullnum) {
 	for (mf = mb->faces; mf; mf = mf->next) {
 		faces[numbrushfaces] = *mf;
 		if (hullnum)
-			memset(&faces[numbrushfaces].texinfo, 0, sizeof(texinfo_t));
+			memset(&faces[numbrushfaces].texinfo, 0, sizeof(dtexinfo_t));
 		numbrushfaces++;
 	}
 

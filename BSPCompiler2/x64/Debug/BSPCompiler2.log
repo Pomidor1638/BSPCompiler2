@@ -1,0 +1,777 @@
+﻿  brush.c
+  bspfile.c
+  csg.c
+  fill.c
+  main.c
+  map.c
+  portal.c
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\mathlib.h(18,2): warning C4091: typedef : пропускается слева от "<unnamed-enum-SIDE_FRONT>", когда ни одна переменная не объявлена
+  (компиляция исходного файла "brush.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(13,1): error C2054: требуется "(" после "constexpr"
+  (компиляция исходного файла "brush.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(13,15): error C2085: MAX_MAP_MODELS: отсутствует в списке формальных параметров
+  (компиляция исходного файла "brush.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(13,30): error C2143: синтаксическая ошибка: отсутствие ";" перед "="
+  (компиляция исходного файла "brush.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(14,1): error C2054: требуется "(" после "constexpr"
+  (компиляция исходного файла "brush.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(14,15): error C2085: MAX_MAP_BRUSHES: отсутствует в списке формальных параметров
+  (компиляция исходного файла "brush.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(14,31): error C2143: синтаксическая ошибка: отсутствие ";" перед "="
+  (компиляция исходного файла "brush.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(15,1): error C2054: требуется "(" после "constexpr"
+  (компиляция исходного файла "brush.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(15,15): error C2085: MAX_MAP_ENTITIES: отсутствует в списке формальных параметров
+  (компиляция исходного файла "brush.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(15,32): error C2143: синтаксическая ошибка: отсутствие ";" перед "="
+  (компиляция исходного файла "brush.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(16,1): error C2054: требуется "(" после "constexpr"
+  (компиляция исходного файла "brush.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(16,15): error C2085: MAX_MAP_ENTSTRING: отсутствует в списке формальных параметров
+  (компиляция исходного файла "brush.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(16,33): error C2143: синтаксическая ошибка: отсутствие ";" перед "="
+  (компиляция исходного файла "brush.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(157,31): error C2065: MAX_MAP_MODELS: необъявленный идентификатор
+  (компиляция исходного файла "brush.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(157,31): error C2057: требуется константное выражение
+  (компиляция исходного файла "brush.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(157,31): error C2466: невозможно выделить память для массива постоянного нулевого размера
+  (компиляция исходного файла "brush.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(163,29): error C2065: MAX_MAP_ENTSTRING: необъявленный идентификатор
+  (компиляция исходного файла "brush.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(163,29): error C2057: требуется константное выражение
+  (компиляция исходного файла "brush.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(163,29): error C2466: невозможно выделить память для массива постоянного нулевого размера
+  (компиляция исходного файла "brush.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\map.h(34,28): error C2065: MAX_MAP_BRUSHES: необъявленный идентификатор
+  (компиляция исходного файла "brush.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\map.h(34,28): error C2057: требуется константное выражение
+  (компиляция исходного файла "brush.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\map.h(34,28): error C2466: невозможно выделить память для массива постоянного нулевого размера
+  (компиляция исходного файла "brush.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\map.h(37,26): error C2065: MAX_MAP_ENTITIES: необъявленный идентификатор
+  (компиляция исходного файла "brush.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\map.h(37,26): error C2057: требуется константное выражение
+  (компиляция исходного файла "brush.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\map.h(37,26): error C2466: невозможно выделить память для массива постоянного нулевого размера
+  (компиляция исходного файла "brush.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\brush.c(93,6): warning C4244: =: преобразование "double" в "float", возможна потеря данных
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(13,1): error C2054: требуется "(" после "constexpr"
+  (компиляция исходного файла "bspfile.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(13,15): error C2085: MAX_MAP_MODELS: отсутствует в списке формальных параметров
+  (компиляция исходного файла "bspfile.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(13,30): error C2143: синтаксическая ошибка: отсутствие ";" перед "="
+  (компиляция исходного файла "bspfile.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(14,1): error C2054: требуется "(" после "constexpr"
+  (компиляция исходного файла "bspfile.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(14,15): error C2085: MAX_MAP_BRUSHES: отсутствует в списке формальных параметров
+  (компиляция исходного файла "bspfile.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(14,31): error C2143: синтаксическая ошибка: отсутствие ";" перед "="
+  (компиляция исходного файла "bspfile.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(15,1): error C2054: требуется "(" после "constexpr"
+  (компиляция исходного файла "bspfile.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(15,15): error C2085: MAX_MAP_ENTITIES: отсутствует в списке формальных параметров
+  (компиляция исходного файла "bspfile.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(15,32): error C2143: синтаксическая ошибка: отсутствие ";" перед "="
+  (компиляция исходного файла "bspfile.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(16,1): error C2054: требуется "(" после "constexpr"
+  (компиляция исходного файла "bspfile.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(16,15): error C2085: MAX_MAP_ENTSTRING: отсутствует в списке формальных параметров
+  (компиляция исходного файла "bspfile.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(16,33): error C2143: синтаксическая ошибка: отсутствие ";" перед "="
+  (компиляция исходного файла "bspfile.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(157,31): error C2065: MAX_MAP_MODELS: необъявленный идентификатор
+  (компиляция исходного файла "bspfile.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(157,31): error C2057: требуется константное выражение
+  (компиляция исходного файла "bspfile.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(157,31): error C2466: невозможно выделить память для массива постоянного нулевого размера
+  (компиляция исходного файла "bspfile.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(163,29): error C2065: MAX_MAP_ENTSTRING: необъявленный идентификатор
+  (компиляция исходного файла "bspfile.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(163,29): error C2057: требуется константное выражение
+  (компиляция исходного файла "bspfile.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(163,29): error C2466: невозможно выделить память для массива постоянного нулевого размера
+  (компиляция исходного файла "bspfile.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.c(5,21): error C2065: MAX_MAP_MODELS: необъявленный идентификатор
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.c(5,21): error C2057: требуется константное выражение
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.c(5,21): error C2466: невозможно выделить память для массива постоянного нулевого размера
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.c(11,19): error C2065: MAX_MAP_ENTSTRING: необъявленный идентификатор
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.c(11,19): error C2057: требуется константное выражение
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.c(11,19): error C2466: невозможно выделить память для массива постоянного нулевого размера
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.c(70,3): warning C4013: Error: нет определения; предполагается "extern" с возвратом типа "int"
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.c(101,18): warning C4267: =: преобразование из "size_t" в "int"; возможна потеря данных
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\mathlib.h(18,2): warning C4091: typedef : пропускается слева от "<unnamed-enum-SIDE_FRONT>", когда ни одна переменная не объявлена
+  (компиляция исходного файла "csg.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(13,1): error C2054: требуется "(" после "constexpr"
+  (компиляция исходного файла "csg.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(13,15): error C2085: MAX_MAP_MODELS: отсутствует в списке формальных параметров
+  (компиляция исходного файла "csg.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(13,30): error C2143: синтаксическая ошибка: отсутствие ";" перед "="
+  (компиляция исходного файла "csg.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(14,1): error C2054: требуется "(" после "constexpr"
+  (компиляция исходного файла "csg.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(14,15): error C2085: MAX_MAP_BRUSHES: отсутствует в списке формальных параметров
+  (компиляция исходного файла "csg.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(14,31): error C2143: синтаксическая ошибка: отсутствие ";" перед "="
+  (компиляция исходного файла "csg.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(15,1): error C2054: требуется "(" после "constexpr"
+  (компиляция исходного файла "csg.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(15,15): error C2085: MAX_MAP_ENTITIES: отсутствует в списке формальных параметров
+  (компиляция исходного файла "csg.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(15,32): error C2143: синтаксическая ошибка: отсутствие ";" перед "="
+  (компиляция исходного файла "csg.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(16,1): error C2054: требуется "(" после "constexpr"
+  (компиляция исходного файла "csg.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(16,15): error C2085: MAX_MAP_ENTSTRING: отсутствует в списке формальных параметров
+  (компиляция исходного файла "csg.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(16,33): error C2143: синтаксическая ошибка: отсутствие ";" перед "="
+  (компиляция исходного файла "csg.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(157,31): error C2065: MAX_MAP_MODELS: необъявленный идентификатор
+  (компиляция исходного файла "csg.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(157,31): error C2057: требуется константное выражение
+  (компиляция исходного файла "csg.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(157,31): error C2466: невозможно выделить память для массива постоянного нулевого размера
+  (компиляция исходного файла "csg.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(163,29): error C2065: MAX_MAP_ENTSTRING: необъявленный идентификатор
+  (компиляция исходного файла "csg.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(163,29): error C2057: требуется константное выражение
+  (компиляция исходного файла "csg.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(163,29): error C2466: невозможно выделить память для массива постоянного нулевого размера
+  (компиляция исходного файла "csg.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\map.h(34,28): error C2065: MAX_MAP_BRUSHES: необъявленный идентификатор
+  (компиляция исходного файла "csg.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\map.h(34,28): error C2057: требуется константное выражение
+  (компиляция исходного файла "csg.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\map.h(34,28): error C2466: невозможно выделить память для массива постоянного нулевого размера
+  (компиляция исходного файла "csg.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\map.h(37,26): error C2065: MAX_MAP_ENTITIES: необъявленный идентификатор
+  (компиляция исходного файла "csg.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\map.h(37,26): error C2057: требуется константное выражение
+  (компиляция исходного файла "csg.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\map.h(37,26): error C2466: невозможно выделить память для массива постоянного нулевого размера
+  (компиляция исходного файла "csg.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\mathlib.h(18,2): warning C4091: typedef : пропускается слева от "<unnamed-enum-SIDE_FRONT>", когда ни одна переменная не объявлена
+  (компиляция исходного файла "fill.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(13,1): error C2054: требуется "(" после "constexpr"
+  (компиляция исходного файла "fill.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(13,15): error C2085: MAX_MAP_MODELS: отсутствует в списке формальных параметров
+  (компиляция исходного файла "fill.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(13,30): error C2143: синтаксическая ошибка: отсутствие ";" перед "="
+  (компиляция исходного файла "fill.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(14,1): error C2054: требуется "(" после "constexpr"
+  (компиляция исходного файла "fill.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(14,15): error C2085: MAX_MAP_BRUSHES: отсутствует в списке формальных параметров
+  (компиляция исходного файла "fill.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(14,31): error C2143: синтаксическая ошибка: отсутствие ";" перед "="
+  (компиляция исходного файла "fill.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(15,1): error C2054: требуется "(" после "constexpr"
+  (компиляция исходного файла "fill.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(15,15): error C2085: MAX_MAP_ENTITIES: отсутствует в списке формальных параметров
+  (компиляция исходного файла "fill.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(15,32): error C2143: синтаксическая ошибка: отсутствие ";" перед "="
+  (компиляция исходного файла "fill.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(16,1): error C2054: требуется "(" после "constexpr"
+  (компиляция исходного файла "fill.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(16,15): error C2085: MAX_MAP_ENTSTRING: отсутствует в списке формальных параметров
+  (компиляция исходного файла "fill.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(16,33): error C2143: синтаксическая ошибка: отсутствие ";" перед "="
+  (компиляция исходного файла "fill.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(157,31): error C2065: MAX_MAP_MODELS: необъявленный идентификатор
+  (компиляция исходного файла "fill.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(157,31): error C2057: требуется константное выражение
+  (компиляция исходного файла "fill.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(157,31): error C2466: невозможно выделить память для массива постоянного нулевого размера
+  (компиляция исходного файла "fill.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(163,29): error C2065: MAX_MAP_ENTSTRING: необъявленный идентификатор
+  (компиляция исходного файла "fill.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(163,29): error C2057: требуется константное выражение
+  (компиляция исходного файла "fill.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(163,29): error C2466: невозможно выделить память для массива постоянного нулевого размера
+  (компиляция исходного файла "fill.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\map.h(34,28): error C2065: MAX_MAP_BRUSHES: необъявленный идентификатор
+  (компиляция исходного файла "fill.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\map.h(34,28): error C2057: требуется константное выражение
+  (компиляция исходного файла "fill.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\map.h(34,28): error C2466: невозможно выделить память для массива постоянного нулевого размера
+  (компиляция исходного файла "fill.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\map.h(37,26): error C2065: MAX_MAP_ENTITIES: необъявленный идентификатор
+  (компиляция исходного файла "fill.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\map.h(37,26): error C2057: требуется константное выражение
+  (компиляция исходного файла "fill.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\map.h(37,26): error C2466: невозможно выделить память для массива постоянного нулевого размера
+  (компиляция исходного файла "fill.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\mathlib.h(18,2): warning C4091: typedef : пропускается слева от "<unnamed-enum-SIDE_FRONT>", когда ни одна переменная не объявлена
+  (компиляция исходного файла "main.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(13,1): error C2054: требуется "(" после "constexpr"
+  (компиляция исходного файла "main.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(13,15): error C2085: MAX_MAP_MODELS: отсутствует в списке формальных параметров
+  (компиляция исходного файла "main.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(13,30): error C2143: синтаксическая ошибка: отсутствие ";" перед "="
+  (компиляция исходного файла "main.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(14,1): error C2054: требуется "(" после "constexpr"
+  (компиляция исходного файла "main.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(14,15): error C2085: MAX_MAP_BRUSHES: отсутствует в списке формальных параметров
+  (компиляция исходного файла "main.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(14,31): error C2143: синтаксическая ошибка: отсутствие ";" перед "="
+  (компиляция исходного файла "main.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(15,1): error C2054: требуется "(" после "constexpr"
+  (компиляция исходного файла "main.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(15,15): error C2085: MAX_MAP_ENTITIES: отсутствует в списке формальных параметров
+  (компиляция исходного файла "main.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(15,32): error C2143: синтаксическая ошибка: отсутствие ";" перед "="
+  (компиляция исходного файла "main.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(16,1): error C2054: требуется "(" после "constexpr"
+  (компиляция исходного файла "main.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(16,15): error C2085: MAX_MAP_ENTSTRING: отсутствует в списке формальных параметров
+  (компиляция исходного файла "main.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(16,33): error C2143: синтаксическая ошибка: отсутствие ";" перед "="
+  (компиляция исходного файла "main.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(157,31): error C2065: MAX_MAP_MODELS: необъявленный идентификатор
+  (компиляция исходного файла "main.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(157,31): error C2057: требуется константное выражение
+  (компиляция исходного файла "main.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(157,31): error C2466: невозможно выделить память для массива постоянного нулевого размера
+  (компиляция исходного файла "main.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(163,29): error C2065: MAX_MAP_ENTSTRING: необъявленный идентификатор
+  (компиляция исходного файла "main.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(163,29): error C2057: требуется константное выражение
+  (компиляция исходного файла "main.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(163,29): error C2466: невозможно выделить память для массива постоянного нулевого размера
+  (компиляция исходного файла "main.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\map.h(34,28): error C2065: MAX_MAP_BRUSHES: необъявленный идентификатор
+  (компиляция исходного файла "main.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\map.h(34,28): error C2057: требуется константное выражение
+  (компиляция исходного файла "main.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\map.h(34,28): error C2466: невозможно выделить память для массива постоянного нулевого размера
+  (компиляция исходного файла "main.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\map.h(37,26): error C2065: MAX_MAP_ENTITIES: необъявленный идентификатор
+  (компиляция исходного файла "main.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\map.h(37,26): error C2057: требуется константное выражение
+  (компиляция исходного файла "main.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\map.h(37,26): error C2466: невозможно выделить память для массива постоянного нулевого размера
+  (компиляция исходного файла "main.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\main.c(47,3): warning C4244: =: преобразование "vec_t" в "float", возможна потеря данных
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\main.c(48,3): warning C4244: =: преобразование "vec_t" в "float", возможна потеря данных
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\main.c(175,8): warning C4244: функция: преобразование "time_t" в "unsigned int", возможна потеря данных
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\mathlib.h(18,2): warning C4091: typedef : пропускается слева от "<unnamed-enum-SIDE_FRONT>", когда ни одна переменная не объявлена
+  (компиляция исходного файла "map.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(13,1): error C2054: требуется "(" после "constexpr"
+  (компиляция исходного файла "map.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(13,15): error C2085: MAX_MAP_MODELS: отсутствует в списке формальных параметров
+  (компиляция исходного файла "map.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(13,30): error C2143: синтаксическая ошибка: отсутствие ";" перед "="
+  (компиляция исходного файла "map.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(14,1): error C2054: требуется "(" после "constexpr"
+  (компиляция исходного файла "map.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(14,15): error C2085: MAX_MAP_BRUSHES: отсутствует в списке формальных параметров
+  (компиляция исходного файла "map.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(14,31): error C2143: синтаксическая ошибка: отсутствие ";" перед "="
+  (компиляция исходного файла "map.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(15,1): error C2054: требуется "(" после "constexpr"
+  (компиляция исходного файла "map.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(15,15): error C2085: MAX_MAP_ENTITIES: отсутствует в списке формальных параметров
+  (компиляция исходного файла "map.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(15,32): error C2143: синтаксическая ошибка: отсутствие ";" перед "="
+  (компиляция исходного файла "map.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(16,1): error C2054: требуется "(" после "constexpr"
+  (компиляция исходного файла "map.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(16,15): error C2085: MAX_MAP_ENTSTRING: отсутствует в списке формальных параметров
+  (компиляция исходного файла "map.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(16,33): error C2143: синтаксическая ошибка: отсутствие ";" перед "="
+  (компиляция исходного файла "map.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(157,31): error C2065: MAX_MAP_MODELS: необъявленный идентификатор
+  (компиляция исходного файла "map.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(157,31): error C2057: требуется константное выражение
+  (компиляция исходного файла "map.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(157,31): error C2466: невозможно выделить память для массива постоянного нулевого размера
+  (компиляция исходного файла "map.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(163,29): error C2065: MAX_MAP_ENTSTRING: необъявленный идентификатор
+  (компиляция исходного файла "map.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(163,29): error C2057: требуется константное выражение
+  (компиляция исходного файла "map.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(163,29): error C2466: невозможно выделить память для массива постоянного нулевого размера
+  (компиляция исходного файла "map.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\map.h(34,28): error C2065: MAX_MAP_BRUSHES: необъявленный идентификатор
+  (компиляция исходного файла "map.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\map.h(34,28): error C2057: требуется константное выражение
+  (компиляция исходного файла "map.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\map.h(34,28): error C2466: невозможно выделить память для массива постоянного нулевого размера
+  (компиляция исходного файла "map.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\map.h(37,26): error C2065: MAX_MAP_ENTITIES: необъявленный идентификатор
+  (компиляция исходного файла "map.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\map.h(37,26): error C2057: требуется константное выражение
+  (компиляция исходного файла "map.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\map.h(37,26): error C2466: невозможно выделить память для массива постоянного нулевого размера
+  (компиляция исходного файла "map.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\map.c(4,21): error C2065: MAX_MAP_BRUSHES: необъявленный идентификатор
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\map.c(4,21): error C2057: требуется константное выражение
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\map.c(4,21): error C2466: невозможно выделить память для массива постоянного нулевого размера
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\map.c(7,19): error C2065: MAX_MAP_ENTITIES: необъявленный идентификатор
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\map.c(7,19): error C2057: требуется константное выражение
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\map.c(7,19): error C2466: невозможно выделить память для массива постоянного нулевого размера
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\map.c(30,9): warning C4244: =: преобразование "vec_t" в "float", возможна потеря данных
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\mathlib.h(18,2): warning C4091: typedef : пропускается слева от "<unnamed-enum-SIDE_FRONT>", когда ни одна переменная не объявлена
+  (компиляция исходного файла "portal.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(13,1): error C2054: требуется "(" после "constexpr"
+  (компиляция исходного файла "portal.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(13,15): error C2085: MAX_MAP_MODELS: отсутствует в списке формальных параметров
+  (компиляция исходного файла "portal.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(13,30): error C2143: синтаксическая ошибка: отсутствие ";" перед "="
+  (компиляция исходного файла "portal.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(14,1): error C2054: требуется "(" после "constexpr"
+  (компиляция исходного файла "portal.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(14,15): error C2085: MAX_MAP_BRUSHES: отсутствует в списке формальных параметров
+  (компиляция исходного файла "portal.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(14,31): error C2143: синтаксическая ошибка: отсутствие ";" перед "="
+  (компиляция исходного файла "portal.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(15,1): error C2054: требуется "(" после "constexpr"
+  (компиляция исходного файла "portal.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(15,15): error C2085: MAX_MAP_ENTITIES: отсутствует в списке формальных параметров
+  (компиляция исходного файла "portal.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(15,32): error C2143: синтаксическая ошибка: отсутствие ";" перед "="
+  (компиляция исходного файла "portal.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(16,1): error C2054: требуется "(" после "constexpr"
+  (компиляция исходного файла "portal.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(16,15): error C2085: MAX_MAP_ENTSTRING: отсутствует в списке формальных параметров
+  (компиляция исходного файла "portal.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(16,33): error C2143: синтаксическая ошибка: отсутствие ";" перед "="
+  (компиляция исходного файла "portal.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(157,31): error C2065: MAX_MAP_MODELS: необъявленный идентификатор
+  (компиляция исходного файла "portal.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(157,31): error C2057: требуется константное выражение
+  (компиляция исходного файла "portal.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(157,31): error C2466: невозможно выделить память для массива постоянного нулевого размера
+  (компиляция исходного файла "portal.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(163,29): error C2065: MAX_MAP_ENTSTRING: необъявленный идентификатор
+  (компиляция исходного файла "portal.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(163,29): error C2057: требуется константное выражение
+  (компиляция исходного файла "portal.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(163,29): error C2466: невозможно выделить память для массива постоянного нулевого размера
+  (компиляция исходного файла "portal.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\map.h(34,28): error C2065: MAX_MAP_BRUSHES: необъявленный идентификатор
+  (компиляция исходного файла "portal.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\map.h(34,28): error C2057: требуется константное выражение
+  (компиляция исходного файла "portal.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\map.h(34,28): error C2466: невозможно выделить память для массива постоянного нулевого размера
+  (компиляция исходного файла "portal.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\map.h(37,26): error C2065: MAX_MAP_ENTITIES: необъявленный идентификатор
+  (компиляция исходного файла "portal.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\map.h(37,26): error C2057: требуется константное выражение
+  (компиляция исходного файла "portal.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\map.h(37,26): error C2466: невозможно выделить память для массива постоянного нулевого размера
+  (компиляция исходного файла "portal.c")
+  
+  qbsp.c
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\mathlib.h(18,2): warning C4091: typedef : пропускается слева от "<unnamed-enum-SIDE_FRONT>", когда ни одна переменная не объявлена
+  (компиляция исходного файла "qbsp.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(13,1): error C2054: требуется "(" после "constexpr"
+  (компиляция исходного файла "qbsp.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(13,15): error C2085: MAX_MAP_MODELS: отсутствует в списке формальных параметров
+  (компиляция исходного файла "qbsp.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(13,30): error C2143: синтаксическая ошибка: отсутствие ";" перед "="
+  (компиляция исходного файла "qbsp.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(14,1): error C2054: требуется "(" после "constexpr"
+  (компиляция исходного файла "qbsp.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(14,15): error C2085: MAX_MAP_BRUSHES: отсутствует в списке формальных параметров
+  (компиляция исходного файла "qbsp.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(14,31): error C2143: синтаксическая ошибка: отсутствие ";" перед "="
+  (компиляция исходного файла "qbsp.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(15,1): error C2054: требуется "(" после "constexpr"
+  (компиляция исходного файла "qbsp.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(15,15): error C2085: MAX_MAP_ENTITIES: отсутствует в списке формальных параметров
+  (компиляция исходного файла "qbsp.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(15,32): error C2143: синтаксическая ошибка: отсутствие ";" перед "="
+  (компиляция исходного файла "qbsp.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(16,1): error C2054: требуется "(" после "constexpr"
+  (компиляция исходного файла "qbsp.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(16,15): error C2085: MAX_MAP_ENTSTRING: отсутствует в списке формальных параметров
+  (компиляция исходного файла "qbsp.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(16,33): error C2143: синтаксическая ошибка: отсутствие ";" перед "="
+  (компиляция исходного файла "qbsp.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(157,31): error C2065: MAX_MAP_MODELS: необъявленный идентификатор
+  (компиляция исходного файла "qbsp.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(157,31): error C2057: требуется константное выражение
+  (компиляция исходного файла "qbsp.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(157,31): error C2466: невозможно выделить память для массива постоянного нулевого размера
+  (компиляция исходного файла "qbsp.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(163,29): error C2065: MAX_MAP_ENTSTRING: необъявленный идентификатор
+  (компиляция исходного файла "qbsp.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(163,29): error C2057: требуется константное выражение
+  (компиляция исходного файла "qbsp.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(163,29): error C2466: невозможно выделить память для массива постоянного нулевого размера
+  (компиляция исходного файла "qbsp.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\map.h(34,28): error C2065: MAX_MAP_BRUSHES: необъявленный идентификатор
+  (компиляция исходного файла "qbsp.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\map.h(34,28): error C2057: требуется константное выражение
+  (компиляция исходного файла "qbsp.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\map.h(34,28): error C2466: невозможно выделить память для массива постоянного нулевого размера
+  (компиляция исходного файла "qbsp.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\map.h(37,26): error C2065: MAX_MAP_ENTITIES: необъявленный идентификатор
+  (компиляция исходного файла "qbsp.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\map.h(37,26): error C2057: требуется константное выражение
+  (компиляция исходного файла "qbsp.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\map.h(37,26): error C2466: невозможно выделить память для массива постоянного нулевого размера
+  (компиляция исходного файла "qbsp.c")
+  
+  solidbsp.c
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\mathlib.h(18,2): warning C4091: typedef : пропускается слева от "<unnamed-enum-SIDE_FRONT>", когда ни одна переменная не объявлена
+  (компиляция исходного файла "solidbsp.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(13,1): error C2054: требуется "(" после "constexpr"
+  (компиляция исходного файла "solidbsp.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(13,15): error C2085: MAX_MAP_MODELS: отсутствует в списке формальных параметров
+  (компиляция исходного файла "solidbsp.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(13,30): error C2143: синтаксическая ошибка: отсутствие ";" перед "="
+  (компиляция исходного файла "solidbsp.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(14,1): error C2054: требуется "(" после "constexpr"
+  (компиляция исходного файла "solidbsp.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(14,15): error C2085: MAX_MAP_BRUSHES: отсутствует в списке формальных параметров
+  (компиляция исходного файла "solidbsp.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(14,31): error C2143: синтаксическая ошибка: отсутствие ";" перед "="
+  (компиляция исходного файла "solidbsp.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(15,1): error C2054: требуется "(" после "constexpr"
+  (компиляция исходного файла "solidbsp.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(15,15): error C2085: MAX_MAP_ENTITIES: отсутствует в списке формальных параметров
+  (компиляция исходного файла "solidbsp.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(15,32): error C2143: синтаксическая ошибка: отсутствие ";" перед "="
+  (компиляция исходного файла "solidbsp.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(16,1): error C2054: требуется "(" после "constexpr"
+  (компиляция исходного файла "solidbsp.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(16,15): error C2085: MAX_MAP_ENTSTRING: отсутствует в списке формальных параметров
+  (компиляция исходного файла "solidbsp.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(16,33): error C2143: синтаксическая ошибка: отсутствие ";" перед "="
+  (компиляция исходного файла "solidbsp.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(157,31): error C2065: MAX_MAP_MODELS: необъявленный идентификатор
+  (компиляция исходного файла "solidbsp.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(157,31): error C2057: требуется константное выражение
+  (компиляция исходного файла "solidbsp.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(157,31): error C2466: невозможно выделить память для массива постоянного нулевого размера
+  (компиляция исходного файла "solidbsp.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(163,29): error C2065: MAX_MAP_ENTSTRING: необъявленный идентификатор
+  (компиляция исходного файла "solidbsp.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(163,29): error C2057: требуется константное выражение
+  (компиляция исходного файла "solidbsp.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(163,29): error C2466: невозможно выделить память для массива постоянного нулевого размера
+  (компиляция исходного файла "solidbsp.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\map.h(34,28): error C2065: MAX_MAP_BRUSHES: необъявленный идентификатор
+  (компиляция исходного файла "solidbsp.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\map.h(34,28): error C2057: требуется константное выражение
+  (компиляция исходного файла "solidbsp.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\map.h(34,28): error C2466: невозможно выделить память для массива постоянного нулевого размера
+  (компиляция исходного файла "solidbsp.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\map.h(37,26): error C2065: MAX_MAP_ENTITIES: необъявленный идентификатор
+  (компиляция исходного файла "solidbsp.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\map.h(37,26): error C2057: требуется константное выражение
+  (компиляция исходного файла "solidbsp.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\map.h(37,26): error C2466: невозможно выделить память для массива постоянного нулевого размера
+  (компиляция исходного файла "solidbsp.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\solidbsp.c(179,32): warning C4244: функция: преобразование "__int64" в "int", возможна потеря данных
+  writebsp.c
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\mathlib.h(18,2): warning C4091: typedef : пропускается слева от "<unnamed-enum-SIDE_FRONT>", когда ни одна переменная не объявлена
+  (компиляция исходного файла "writebsp.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(13,1): error C2054: требуется "(" после "constexpr"
+  (компиляция исходного файла "writebsp.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(13,15): error C2085: MAX_MAP_MODELS: отсутствует в списке формальных параметров
+  (компиляция исходного файла "writebsp.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(13,30): error C2143: синтаксическая ошибка: отсутствие ";" перед "="
+  (компиляция исходного файла "writebsp.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(14,1): error C2054: требуется "(" после "constexpr"
+  (компиляция исходного файла "writebsp.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(14,15): error C2085: MAX_MAP_BRUSHES: отсутствует в списке формальных параметров
+  (компиляция исходного файла "writebsp.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(14,31): error C2143: синтаксическая ошибка: отсутствие ";" перед "="
+  (компиляция исходного файла "writebsp.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(15,1): error C2054: требуется "(" после "constexpr"
+  (компиляция исходного файла "writebsp.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(15,15): error C2085: MAX_MAP_ENTITIES: отсутствует в списке формальных параметров
+  (компиляция исходного файла "writebsp.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(15,32): error C2143: синтаксическая ошибка: отсутствие ";" перед "="
+  (компиляция исходного файла "writebsp.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(16,1): error C2054: требуется "(" после "constexpr"
+  (компиляция исходного файла "writebsp.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(16,15): error C2085: MAX_MAP_ENTSTRING: отсутствует в списке формальных параметров
+  (компиляция исходного файла "writebsp.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(16,33): error C2143: синтаксическая ошибка: отсутствие ";" перед "="
+  (компиляция исходного файла "writebsp.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(157,31): error C2065: MAX_MAP_MODELS: необъявленный идентификатор
+  (компиляция исходного файла "writebsp.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(157,31): error C2057: требуется константное выражение
+  (компиляция исходного файла "writebsp.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(157,31): error C2466: невозможно выделить память для массива постоянного нулевого размера
+  (компиляция исходного файла "writebsp.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(163,29): error C2065: MAX_MAP_ENTSTRING: необъявленный идентификатор
+  (компиляция исходного файла "writebsp.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(163,29): error C2057: требуется константное выражение
+  (компиляция исходного файла "writebsp.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\bspfile.h(163,29): error C2466: невозможно выделить память для массива постоянного нулевого размера
+  (компиляция исходного файла "writebsp.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\map.h(34,28): error C2065: MAX_MAP_BRUSHES: необъявленный идентификатор
+  (компиляция исходного файла "writebsp.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\map.h(34,28): error C2057: требуется константное выражение
+  (компиляция исходного файла "writebsp.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\map.h(34,28): error C2466: невозможно выделить память для массива постоянного нулевого размера
+  (компиляция исходного файла "writebsp.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\map.h(37,26): error C2065: MAX_MAP_ENTITIES: необъявленный идентификатор
+  (компиляция исходного файла "writebsp.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\map.h(37,26): error C2057: требуется константное выражение
+  (компиляция исходного файла "writebsp.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\map.h(37,26): error C2466: невозможно выделить память для массива постоянного нулевого размера
+  (компиляция исходного файла "writebsp.c")
+  
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\writebsp.c(8,13): warning C4244: =: преобразование "vec_t" в "float", возможна потеря данных
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\writebsp.c(10,25): warning C4244: =: преобразование "vec_t" в "float", возможна потеря данных
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\writebsp.c(11,25): warning C4244: =: преобразование "vec_t" в "float", возможна потеря данных
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\writebsp.c(12,25): warning C4244: =: преобразование "vec_t" в "float", возможна потеря данных
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\writebsp.c(47,2): warning C4244: =: преобразование "vec_t" в "float", возможна потеря данных
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\writebsp.c(83,36): warning C4244: =: преобразование "vec_t" в "float", возможна потеря данных
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\writebsp.c(84,36): warning C4244: =: преобразование "vec_t" в "float", возможна потеря данных
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\writebsp.c(85,36): warning C4244: =: преобразование "vec_t" в "float", возможна потеря данных
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\writebsp.c(86,23): warning C4244: =: преобразование "vec_t" в "float", возможна потеря данных
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\writebsp.c(137,19): error C2065: MAX_MAP_MODELS: необъявленный идентификатор
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\writebsp.c(161,2): warning C4244: =: преобразование "vec_t" в "float", возможна потеря данных
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\writebsp.c(162,2): warning C4244: =: преобразование "vec_t" в "float", возможна потеря данных
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\writebsp.c(210,2): warning C4244: =: преобразование "vec_t" в "float", возможна потеря данных
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\writebsp.c(211,2): warning C4244: =: преобразование "vec_t" в "float", возможна потеря данных
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\writebsp.c(238,19): error C2065: MAX_MAP_MODELS: необъявленный идентификатор
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\writebsp.c(258,31): warning C4244: =: преобразование "vec_t" в "float", возможна потеря данных
+C:\Users\UBER_USER\repos\BSPCompiler2\BSPCompiler2\writebsp.c(259,31): warning C4244: =: преобразование "vec_t" в "float", возможна потеря данных
+  Создание кода...

@@ -19,17 +19,18 @@ typedef struct {
 #define MAX_WINDINGS_COUNT    128
 #define MAX_POINTS_ON_WINDING  64
 
-#define SIDESPACE 24
+#define SIDESPACE 32
 
 // qbsp.c 
-
 extern qbool verbose;
 extern qbool noclip;
 extern qbool nodraw;
+extern qbool nofill;
+extern int    valid;
+extern int	hullnum;
 
 void qprintf(char* fmt, ...);
 
-extern int NumWindings;
 
 typedef struct winding_s {
 
@@ -158,6 +159,7 @@ node_t* AllocNode();
 void FreeNode_r(node_t* node);
 
 surface_t* CSGFaces(brushset_t* bs);
+surface_t* GatherNodeFaces(node_t* headnode);
 
 // solidbsp.c
 void SubdivideFace(face_t* f, face_t** prevptr);
@@ -182,9 +184,12 @@ void FreeAllPortals(node_t* node);
 portal_t* AllocPortal(void);
 void FreePortal(portal_t* p);
 
+// fill.c
+qbool FillOutside(node_t* nodes);
 
 // writebsp.c
 
+dplane_t PlaneTodPlane(plane_t p);
 void WriteNodePlanes(node_t* headnode);
 int FindFinalVertex(vec3_t v);
 void WriteClipNodes(node_t* headnode);
