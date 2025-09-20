@@ -18,13 +18,14 @@ namespace Renderer
 
 	};
 
-	extern Camera mainCamera;
+	extern Camera MainCamera;
 
 	void FrustumFromCamera(Camera c);
 
 	void MoveCamera(Camera c);
 
 	bool R_Init();
+	void R_Update();
 	void Render();
 	void R_Quit();
 };

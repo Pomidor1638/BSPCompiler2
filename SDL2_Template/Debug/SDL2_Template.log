@@ -1,0 +1,33 @@
+﻿  bspfile.cpp
+D:\VSprojects\SDL2_Template\SDL2_Template\bspfile.cpp(27,9): warning C4477: "printf": в строке форматирования "%s" требуется аргумент типа "char *", но вариативный аргумент "1" имеет тип "const std::string"
+  client.cpp
+D:\VSprojects\SDL2_Template\SDL2_Template\engine.h(3,10): error C1083: Не удается открыть файл включение: SDL.h: No such file or directory,
+  (компиляция исходного файла "client.cpp")
+  
+  engine.cpp
+D:\VSprojects\SDL2_Template\SDL2_Template\engine.h(3,10): error C1083: Не удается открыть файл включение: SDL.h: No such file or directory,
+  (компиляция исходного файла "engine.cpp")
+  
+  input.cpp
+D:\VSprojects\SDL2_Template\SDL2_Template\engine.h(3,10): error C1083: Не удается открыть файл включение: SDL.h: No such file or directory,
+  (компиляция исходного файла "input.cpp")
+  
+  main.cpp
+D:\VSprojects\SDL2_Template\SDL2_Template\engine.h(3,10): error C1083: Не удается открыть файл включение: SDL.h: No such file or directory,
+  (компиляция исходного файла "main.cpp")
+  
+  mathlib.cpp
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\corecrt_math_defines.h(28,9): warning C4005: M_PI: изменение макроопределения
+  (компиляция исходного файла "mathlib.cpp")
+      D:\VSprojects\SDL2_Template\SDL2_Template\mathlib.h(3,9):
+      см. предыдущее определение "M_PI"
+  
+  model.cpp
+D:\VSprojects\SDL2_Template\SDL2_Template\model.h(3,10): error C1083: Не удается открыть файл включение: SDL_opengl.h: No such file or directory,
+  (компиляция исходного файла "model.cpp")
+  
+  render.cpp
+D:\VSprojects\SDL2_Template\SDL2_Template\engine.h(3,10): error C1083: Не удается открыть файл включение: SDL.h: No such file or directory,
+  (компиляция исходного файла "render.cpp")
+  
+  Создание кода...

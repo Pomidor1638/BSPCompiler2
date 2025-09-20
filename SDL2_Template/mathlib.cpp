@@ -121,32 +121,24 @@ vec_t vec3::length() const {
 }
 
 vec_t vec3::normalize(vec3& a) {
-	double length = a.v[0] * a.v[0] + a.v[1] * a.v[1] + a.v[2] * a.v[2];
+	vec_t sqr_length = a.v[0] * a.v[0] + a.v[1] * a.v[1] + a.v[2] * a.v[2];
 
-	if (length < EPSILON_ZERO * EPSILON_ZERO) {
+	if (sqr_length < EPSILON_ZERO * EPSILON_ZERO) {
 		return 0;
 	}
 
-
-	length = sqrt(length);
-
-	a.v[0] /= length;
-	a.v[1] /= length;
-	a.v[2] /= length;
-
+	vec_t length = sqrt(sqr_length);
 	return length;
 }
 
 vec_t vec3::normalize() {
-	double length = v[0]*v[0] + v[1]*v[1] + v[2]*v[2];
+	vec_t sqr_length = v[0] * v[0] + v[1] * v[1] + v[2] * v[2];
 
-	if (length < EPSILON_ZERO * EPSILON_ZERO) {
+	if (sqr_length < EPSILON_ZERO * EPSILON_ZERO) {
 		return 0;
 	}
 
-
-	length = sqrt(length);
-
+	vec_t length = sqrt(sqr_length);
 	v[0] /= length;
 	v[1] /= length;
 	v[2] /= length;

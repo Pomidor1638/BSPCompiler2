@@ -1,4 +1,4 @@
-
+﻿
 #include "render.h"
 
 #include <SDL_opengl.h>
@@ -7,7 +7,11 @@
 namespace Renderer
 {
 
-	Camera mainCamera;
+	Camera MainCamera;
+
+	int CurNode[MAX_MAP_HULLS];
+	GLfloat CurColor[3];
+
 
 	void FrustumFromCamera(Camera c) {
 
@@ -40,49 +44,54 @@ namespace Renderer
 		TranslateCamera(c.origin);
 	}
 
-	bool R_Init()
-	{
-		if (!Engine::context)
-			return false;
 
-		mainCamera = Camera{};
-
-		mainCamera.fov = M_PI / 2;
-		mainCamera.height = 2;
-		mainCamera.width = 2 * (float(Engine::width) / Engine::height);
-
-		mainCamera.far_pl = 10000;
-
-		FrustumFromCamera(mainCamera);
-
-		return true;
-	}
 
 	void RenderBegin()
 	{
-		glClear(GL_COLOR_BUFFER_BIT/* | GL_DEPTH_BUFFER_BIT*/);
-		glClearColor(0.1, 0.3, 0.2, 1.0);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glPushMatrix();
 	}
 
-	void drawFace(const face_t& face) {
-		glBegin(/*GL_POLYGON*/GL_LINE_LOOP);
+	void drawFace(const face_t& face, bool wire = false) {
 
-		glColor3f(1, 1, 1);
+		const texinfo_t& texinfo = Engine::map.texinfos[face.texinfonum];
+		const texture_t& texture = Engine::map.textures[texinfo.texturenum];
 
+		if (!wire)
+		{
+			glEnable(GL_TEXTURE_2D);
+			glBindTexture(GL_TEXTURE_2D, texture.gl_texturenum);
+
+			glBegin(GL_POLYGON);
+			glColor3fv(CurColor);
+		}
+		else
+		{
+			glBegin(GL_LINE_LOOP);
+			glColor3f(1, 0, 0);
+		}
 		for (int i = 0; i < face.numpoints; i++) {
-			//const texinfo_t& texinfo = Engine::map.texinfos[face.texinfonum];
-
 			int index = Engine::map.vindexes[face.firstpoint + i];
-			vec3_t& v = Engine::map.vertexes[index];
+			vec3_t& vertex = Engine::map.vertexes[index];
+			if (!wire)
+			{
+				// Вычисляем текстурные координаты
+				float u = (vertex * texinfo.u) + texinfo.uoffset;
+				float v = (vertex * texinfo.v) + texinfo.voffset;
+
+				glTexCoord2f(u, v);
+			}
 
 #ifdef DOUBLE_VEC_T
 			glVertex3dv((const GLdouble*)&v[0]);
 #else
-			glVertex3fv((const GLfloat*)&v[0]);
+			glVertex3fv((const GLfloat*)&vertex[0]);
 #endif
 		}
+
 		glEnd();
+		if (!wire)
+			glDisable(GL_TEXTURE_2D);
 	}
 
 	void drawLeaf(int leafnum) {
@@ -97,38 +106,34 @@ namespace Renderer
 	}
 
 	void painters_algorithm(int nodenum) {
+
 		if (nodenum < 0) {
 			drawLeaf(-(nodenum + 1));
 			return;
 		}
 
 		const node_t& node = Engine::map.nodes[nodenum];
-		
 		const plane_t& plane = Engine::map.planes[node.planenum];
+		const bool is_front = plane.dot(MainCamera.origin) > 0;
 
-		const bool t = (plane.normal * mainCamera.origin - plane.dist) > 0;
-
-		painters_algorithm(node.children[ t]);
-		painters_algorithm(node.children[!t]);
+		painters_algorithm(node.children[is_front]);
+		painters_algorithm(node.children[!is_front]);
 	}
 
 	void RenderWorld(Camera cam)
 	{
-		//glPushMatrix();
+		glMatrixMode(GL_PROJECTION);
+		glLoadIdentity();
+		FrustumFromCamera(cam);
 
+		glMatrixMode(GL_MODELVIEW);
+		glLoadIdentity();
 		MoveCamera(cam);
-		
-		//int headnode = Engine::map.models[0].headnode[0];
 
-		//painters_algorithm(headnode);
-
-		for (const auto& x : Engine::map.faces) {
-			drawFace(x);
-		}
-			
-
-		//glPopMatrix();
+		int headnode = Engine::map.models[0].headnode[0];
+		painters_algorithm(headnode);
 	}
+
 
 	void RenderHUD()
 	{
@@ -141,13 +146,92 @@ namespace Renderer
 		SDL_GL_SwapWindow(Engine::window);
 	}
 
+	void UpdateDrawNode() 
+	{
+
+		int nodenum = Engine::map.models[0].headnode[0];
+
+		const vec3_t& origin = MainCamera.origin;
+
+		while (nodenum >= 0) {
+			const node_t& node = Engine::map.nodes[nodenum];
+			const plane_t& plane = Engine::map.planes[node.planenum];
+			const bool isFront = plane.dot(origin) > 0;
+			nodenum = node.children[!isFront];
+		}
+
+		CurNode[0] = -(nodenum + 1);
+	}
+
+	void R_Update() 
+	{
+		UpdateDrawNode();
+
+		const leaf_t& leaf = Engine::map.leafs[CurNode[0]];
+
+		switch (leaf.contents) {
+		case CONTENTS_WATER:
+			CurColor[0] = 0.1;
+			CurColor[1] = 0.3;
+			CurColor[2] = 0.5;
+			break;
+		default:
+			CurColor[0] = 1.0;
+			CurColor[1] = 1.0;
+			CurColor[2] = 1.0;
+			break;
+		}
+
+	}
+
 	void Render()
 	{
 		RenderBegin();
-		RenderWorld(mainCamera);
+		RenderWorld(MainCamera);
 		RenderHUD();
 		RenderEnd();
 	}
+
+	void setupFog() {
+		glEnable(GL_FOG);
+
+		GLfloat fogColor[4] = { 0.2f, 0.0f, 0.1f, 1.0f };
+		glFogfv(GL_FOG_COLOR, fogColor);
+		glFogi(GL_FOG_MODE, GL_LINEAR);
+		glFogf(GL_FOG_START, MainCamera.far_pl * 0.3f);
+		glFogf(GL_FOG_END, MainCamera.far_pl);
+		glHint(GL_FOG_HINT, GL_FASTEST);
+
+		glClearColor(fogColor[0], fogColor[1], fogColor[2], fogColor[3]);
+	}
+
+
+
+	bool R_Init()
+	{
+		if (!Engine::context)
+			return false;
+
+		MainCamera = Camera{};
+		MainCamera.fov = M_PI / 2;
+		MainCamera.height = 2;
+		MainCamera.width = 2 * (float(Engine::width) / Engine::height);
+		MainCamera.far_pl = 5000;
+
+		glEnable(GL_DEPTH_TEST);
+		glDepthFunc(GL_LEQUAL);
+		glEnable(GL_TEXTURE_2D);
+		glEnable(GL_CULL_FACE);
+		glCullFace(GL_BACK);
+
+		FrustumFromCamera(MainCamera);
+
+		setupFog();
+
+		return true;
+	}
+
+
 
 	void R_Quit()
 	{

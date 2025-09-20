@@ -4,8 +4,6 @@ namespace NetWork {
 
 	bool N_Init() {
 
-
-
 	}
 
 }

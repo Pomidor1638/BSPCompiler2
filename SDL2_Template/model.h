@@ -38,12 +38,16 @@ enum PLANE_TYPE : uint8_t {
 };
 
 
-typedef struct {
+typedef struct plane_s {
 	
 	vec3_t normal;
 	vec_t dist;
 
 	PLANE_TYPE type;
+
+	vec_t dot(vec3_t origin) const {
+		return normal * origin - dist;
+	}
 
 } plane_t;
 
@@ -57,18 +61,7 @@ typedef struct face_s {
 	uint16_t   numpoints;
 
 } face_t;
-/*
-typedef struct portal_t {
 
-	int planenum;
-
-	int leafs[2];
-
-	uint32_t firstpoint;
-	uint16_t numpoints;
-
-} portal_t;
-*/
 typedef struct node_s{
 
 	vec3_t mins;
@@ -78,14 +71,7 @@ typedef struct node_s{
 	int children[2];
 
 } node_t;
-/*
-typedef struct clipnode_s {
 
-	int planenum;
-	int children[2];
-
-} clipnode_t;
-*/
 typedef struct leaf_s {
 
 	CONTENTS_TYPE contents;
@@ -114,6 +100,21 @@ typedef struct texinfo_s {
 
 } texinfo_t;
 
+enum TextureSize {
+	TEX_2x2 = 2,
+	TEX_4x4 = 4,
+	TEX_16x16 = 16,
+	TEX_32x32 = 32,
+	TEX_64x64 = 64,     // Рекомендуемый по умолчанию
+	TEX_128x128 = 128,
+	TEX_256x256 = 256,
+	TEX_512x512 = 512,
+	TEX_1024x1024 = 1024,
+
+	TEX_ANY
+};
+
+
 typedef struct texture_s {
 
 	std::string name;
@@ -123,17 +124,21 @@ typedef struct texture_s {
 
 	GLuint gl_texturenum;
 
+	~texture_s() {
+		if (gl_texturenum != 0) {
+			glDeleteTextures(1, &gl_texturenum);
+		}
+	}
+
 } texture_t;
 
 
 
-
-struct Map {
-	
+class Map {
+public:
 	std::string                    name;
 
 	std::vector<texture_t>     textures;
-	std::vector<GLuint>        tindexes;
 	std::vector<texinfo_t>     texinfos;
 
 	std::vector<vec3_t>		   vertexes;
@@ -151,7 +156,12 @@ struct Map {
 
 	std::vector<model_t>         models;
 
+
+protected:
 	bool load(BSPMap* bspmap);
+	bool loadTextures(BSPMap* bspmap);
+public:
+
 	bool load(std::string bspfilename);
 	std::string toString();
 

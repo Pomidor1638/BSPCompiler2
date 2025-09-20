@@ -9,19 +9,20 @@ void BSPMap::printMap() const {
 		int count;
 		int structSize;
 	} l[] = {
-		{ "numplanes     ", numplanes     , sizeof(dplane_t)        },
-		{ "numvertexes   ", numvertexes   , sizeof(dvertex_t)      },
-		{ "numvertextable", numvindexes, sizeof(unsigned int)   },
-		{ "numportals    ", numportals    , sizeof(dportal_t)      },
-		{ "numportaltable", numpindexes, sizeof(unsigned short) },
-		{ "numfaces      ", numfaces      , sizeof(dface_t)        },
-		{ "numnodes	     ", numnodes	  , sizeof(dnode_t)        },
-		{ "numleafs	     ", numleafs	  , sizeof(dleaf_t)        },
-		{ "numclipnodes  ", numclipnodes  , sizeof(dclipnode_t)    },
-		{ "numdtexinfo   ", numdtexinfo   , sizeof(dtexinfo_t)     },
-		{ "lightdatasize ", lightdatasize , sizeof(byte)/* What? */},
-		{ "entdatasize   ", entdatasize   , sizeof(char)/*   ?   */},
-		{ "nummodels     ", nummodels     , sizeof(dmodel_t)       }
+		{ "numplanes     ", numplanes    , sizeof(dplane_t)       },
+		{ "numvertexes   ", numvertexes  , sizeof(dvertex_t)      },
+		{ "numvertextable", numvindexes  , sizeof(unsigned int)   },
+		{ "numportals    ", numportals   , sizeof(dportal_t)      },
+		{ "numportaltable", numpindexes  , sizeof(unsigned short) },
+		{ "numfaces      ", numfaces     , sizeof(dface_t)        },
+		{ "numnodes	     ", numnodes	 , sizeof(dnode_t)        },
+		{ "numleafs	     ", numleafs	 , sizeof(dleaf_t)        },
+		{ "numclipnodes  ", numclipnodes , sizeof(dclipnode_t)    },
+		{ "numdtexinfo   ", numtexinfo   , sizeof(dtexinfo_t)     },
+		{ "lightdatasize ", lightdatasize, sizeof(byte)/* What? */},
+		{ "texdatasize   ", texdatasize  , sizeof(byte)/*   ?   */},
+		{ "entdatasize   ", entdatasize  , sizeof(char)/*   ?   */},
+		{ "nummodels     ", nummodels    , sizeof(dmodel_t)       }
 	};
 
 	printf("name: %s\n", bspfilename);
@@ -49,20 +50,20 @@ bool BSPMap::loadMap(std::string path) {
 		void** strctptr;
 		int structSize;
 	} lumpsForLoad[] = {
-		{ LUMP_PLANES     , &numplanes     , (void**)(&dplanes     ), sizeof(dplane_t)       },
-		{ LUMP_VERTEXES   ,	&numvertexes   , (void**)(&dvertexes   ), sizeof(dvertex_t)      },
-		{ LUMP_VINEXES    , &numvindexes, (void**)(&dvindexes), sizeof(unsigned int)   },
-		{ LUMP_PORTALS    ,	&numportals    , (void**)(&dportals    ), sizeof(dportal_t)      },
-		{ LUMP_PINDEXES   ,	&numpindexes, (void**)(&dpindexes), sizeof(unsigned short) },
-		{ LUMP_FACES      ,	&numfaces      , (void**)(&dfaces      ), sizeof(dface_t)        },
-		{ LUMP_NODES      ,	&numnodes	   , (void**)(&dnodes      ), sizeof(dnode_t)        },
-		{ LUMP_LEAFS      ,	&numleafs	   , (void**)(&dleafs      ), sizeof(dleaf_t)        },
-		{ LUMP_CLIPNODES  ,	&numclipnodes  , (void**)(&dclipnodes  ), sizeof(dclipnode_t)    },
-		{ LUMP_TEXINFO    ,	&numdtexinfo   , (void**)(&dtexinfo    ), sizeof(dtexinfo_t)     },
-		{ LUMP_LIGHTING   ,	&lightdatasize , (void**)(&dlightdata  ), sizeof(byte)/* What? */},
-		{ LUMP_ENTITIES   ,	&entdatasize   , (void**)(&dentdata    ), sizeof(char)/*   ?   */},
-		{ LUMP_MODELS     ,	&nummodels     , (void**)(&dmodels     ), sizeof(dmodel_t)       },
-		//{ LUMP_ENTITIES   ,& entdatasize   , (void**)(&dentdata), sizeof(char)/*   ?   */ },
+		{ LUMP_PLANES   , &numplanes    , (void**)(&dplanes   ), sizeof(dplane_t)       },
+		{ LUMP_VERTEXES , &numvertexes  , (void**)(&dvertexes ), sizeof(dvertex_t)      },
+		{ LUMP_VINDEXES , &numvindexes  , (void**)(&dvindexes ), sizeof(unsigned int)   },
+		{ LUMP_PORTALS  , &numportals   , (void**)(&dportals  ), sizeof(dportal_t)      },
+		{ LUMP_PINDEXES , &numpindexes  , (void**)(&dpindexes ), sizeof(unsigned short) },
+		{ LUMP_FACES    , &numfaces     , (void**)(&dfaces    ), sizeof(dface_t)        },
+		{ LUMP_NODES    , &numnodes	    , (void**)(&dnodes    ), sizeof(dnode_t)        },
+		{ LUMP_LEAFS    , &numleafs	    , (void**)(&dleafs    ), sizeof(dleaf_t)        },
+		{ LUMP_CLIPNODES, &numclipnodes , (void**)(&dclipnodes), sizeof(dclipnode_t)    },
+		{ LUMP_TEXINFO  , &numtexinfo   , (void**)(&dtexinfo  ), sizeof(dtexinfo_t)     },
+		{ LUMP_LIGHTING , &lightdatasize, (void**)(&dlightdata), sizeof(byte)/* What? */},
+		{ LUMP_TEXTURES , &texdatasize  , (void**)(&dtexdata  ), sizeof(byte)/*   ?   */},
+		{ LUMP_ENTITIES , &entdatasize  , (void**)(&dentdata  ), sizeof(char)/*   ?   */},
+		{ LUMP_MODELS   , &nummodels    , (void**)(&dmodels   ), sizeof(dmodel_t)       },
 	};
 
 	if (!file.read((char*)&header, sizeof(dheader_t))) {
@@ -129,6 +130,7 @@ BSPMap::~BSPMap() {
 		(void**)(&dleafs),
 		(void**)(&dclipnodes),
 		(void**)(&dtexinfo),
+		(void**)(&dtexdata),
 		(void**)(&dlightdata),
 		(void**)(&dentdata),
 		(void**)(&dmodels),

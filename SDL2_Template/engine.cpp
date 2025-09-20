@@ -14,7 +14,6 @@ namespace Engine {
 
 	bool running;
 
-
 	std::string bspfilename;
 
 	Map map;
@@ -44,7 +43,7 @@ namespace Engine {
 
 		running = false;
 
-		window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
+		window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, SDL_WINDOW_OPENGL /*| SDL_WINDOW_FULLSCREEN*/);
 		if (!window) {
 			return false;
 		}
@@ -55,7 +54,9 @@ namespace Engine {
 			return false;
 		}
 
-		bspfilename = "negro.bsp";
+		SDL_GL_MakeCurrent(window, context);
+
+		bspfilename = "nigger.bsp";
 
 		if (!map.load(bspfilename))
 		{
@@ -122,6 +123,7 @@ namespace Engine {
 			return;
 		case SDL_MOUSEWHEEL:
 			InputManager::HandleMouseWheelEvent(e.wheel);
+			break;
 		case SDL_KEYDOWN:
 			running = InputManager::HandleKeyboardEvent(e.key);
 			break;
@@ -132,24 +134,26 @@ namespace Engine {
 
 	void CheckEvents() 
 	{
-		
 		SDL_Event event{};
-
 		while (SDL_PollEvent(&event))
 		{
 			HandleEvent(event);
 		}
+	}
 
+	void Update() 
+	{
+		InputManager::IM_Update();
+		CheckEvents();
+		Client::CL_Update();
+		Renderer::R_Update();
 	}
 
 	void Frame() 
 	{
 
 		ComputeDeltaTime();
-		InputManager::IM_Update();
-		CheckEvents();
-
-		Client::CL_Update();
+		Update();
 		Renderer::Render();
 
 	}

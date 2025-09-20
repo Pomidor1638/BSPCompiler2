@@ -49,8 +49,8 @@ namespace Client {
 
 	void CL_Update() 
 	{
-		vec3_t& angle = Renderer::mainCamera.angles;
-		vec3_t& origin = Renderer::mainCamera.origin;
+		vec3_t& angle = Renderer::MainCamera.angles;
+		vec3_t& origin = Renderer::MainCamera.origin;
 
 		UpdateAngle(angle);
 
@@ -89,7 +89,7 @@ namespace Client {
 			wishdir[2] -= 1;
 		}
 
-		const vec_t speed = 100;
+		const vec_t speed = 1000;
 
 		origin += wishdir * speed * Engine::deltaTime;
 
